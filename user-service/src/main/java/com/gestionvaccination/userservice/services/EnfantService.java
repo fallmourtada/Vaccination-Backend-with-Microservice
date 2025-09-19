@@ -1,5 +1,6 @@
 package com.gestionvaccination.userservice.services;
 
+import com.gestionvaccination.userservice.client.dto.EnfantAvecVaccinationsDTO;
 import com.gestionvaccination.userservice.dto.*;
 import com.gestionvaccination.userservice.enumeration.Sexe;
 import com.google.zxing.WriterException;
@@ -49,6 +50,13 @@ public interface EnfantService {
      * Obtenir tous les enfants avec pagination
      */
     List<EnfantDTO> getAllEnfants();
-    
+
+
+    EnfantAvecVaccinationsDTO getEnfantByQrCode(String codeQr);
+
+
+    EnfantAvecVaccinationsDTO getEnfantWithVaccinations(Long enfantId);
+
+    EnfantAvecVaccinationsDTO getEnfantWithVaccinationsByQrCode(String qrCode);
 
 }

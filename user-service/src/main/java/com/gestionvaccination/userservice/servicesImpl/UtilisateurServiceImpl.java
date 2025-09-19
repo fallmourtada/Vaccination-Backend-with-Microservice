@@ -3,6 +3,7 @@ package com.gestionvaccination.userservice.servicesImpl;
 
 import com.gestionvaccination.userservice.client.dto.CentreDTO;
 import com.gestionvaccination.userservice.client.dto.LocalityDTO;
+import com.gestionvaccination.userservice.client.rest.AuthServiceClient;
 import com.gestionvaccination.userservice.client.rest.LocationServiceClient;
 import com.gestionvaccination.userservice.dto.*;
 import com.gestionvaccination.userservice.entites.Utilisateur;
@@ -34,6 +35,8 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     private final EntityEnrichmentService entityEnrichmentService;
 
     private final LocationServiceClient locationServiceClient;
+
+    private final AuthServiceClient authServiceClient;
 
     @Override
     public UtilisateurDTO saveUtilisateur(SaveUtilisateurDTO saveUtilisateurDTO, UserRole userRole,Long localityId,Long centreId) {
@@ -81,6 +84,8 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         userDTO.setLocality(locality);
         userDTO.setCentre(centre);
 
+
+
         return userDTO;
     }
 
@@ -109,6 +114,12 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         entityEnrichmentService.enrichUtilisateurWithAllData(utilisateur);
         UtilisateurDTO userDTO = utilisateurMapper.fromEntity(savedUser);
         userDTO.setCentre(centre);
+
+        AuthRequestDTO authRequestDTO = new AuthRequestDTO();
+        authRequestDTO.setUsername(saveInfirmierDTO.getEmail());
+        authRequestDTO.setPassword(saveInfirmierDTO.getPassword());
+        authRequestDTO.setRole(userRole.name());
+        authServiceClient.SaveInfirmier(authRequestDTO);
 
         return userDTO;
     }
@@ -154,7 +165,12 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
     @Override
     public UtilisateurDTO getUserByEmail(String email) {
-        return null;
+
+        Utilisateur utilisateur = utilisateurRepository.findByEmail(email);
+
+        UtilisateurDTO utilisateurDTO = utilisateurMapper.fromEntity(utilisateur);
+
+        return utilisateurDTO ;
     }
 
     @Override

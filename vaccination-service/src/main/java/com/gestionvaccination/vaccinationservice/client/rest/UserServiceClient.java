@@ -24,5 +24,9 @@ public interface UserServiceClient {
     EnfantDTO getEnfantById(@PathVariable Long enfantId);
 
 
+    @GetMapping("/api/v1/users/enfants/by-qr-code/{qrCode}")
+    EnfantDTO getEnfantByQrCode(@PathVariable String qrCode);
+
+
 
 }

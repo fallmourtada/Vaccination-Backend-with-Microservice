@@ -8,6 +8,6 @@
 //@FeignClient(name = "user-service")
 //public interface EnfantServiceClient {
 //
-//    @GetMapping("/api/v1/enfants/{enfantId}")
+//    @GetMapping("/api/v1/users/enfants/{enfantId}")
 //    EnfantDTO getEnfantById(@PathVariable("enfantId") Long id);
 //}

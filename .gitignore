@@ -1,0 +1,22 @@
+# Fichiers de classes compilés
+*.class
+
+# Fichiers de package
+*.jar
+*.war
+*.ear
+
+# Artéfacts Maven
+target/
+pom.xml.tag
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+
+# Fichiers d'IDE
+.idea/
+.vscode/
+*.iml
+.settings/
+.classpath
+.project

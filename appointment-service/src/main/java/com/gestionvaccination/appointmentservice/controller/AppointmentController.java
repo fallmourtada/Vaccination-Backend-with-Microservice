@@ -8,6 +8,7 @@ import com.gestionvaccination.appointmentservice.service.AppointmentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -24,6 +25,7 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 @RequestMapping("/api/v1/appointments")
 @Tag(name = "Gestion des Rendez-vous", description = "APIs pour la gestion des rendez-vous de vaccination")
+@SecurityRequirement(name = "bearerAuth")
 @AllArgsConstructor
 public class AppointmentController {
     private final AppointmentService appointmentService;

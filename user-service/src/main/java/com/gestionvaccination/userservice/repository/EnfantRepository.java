@@ -18,5 +18,6 @@ import java.util.Optional;
  */
 @Repository
 public interface EnfantRepository extends JpaRepository<Enfant, Long> {
+    Optional<Enfant> findByContenuQrCode(String contenuQrCode);
 
 }

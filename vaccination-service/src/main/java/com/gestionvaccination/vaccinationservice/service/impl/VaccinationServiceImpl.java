@@ -190,4 +190,30 @@ public class VaccinationServiceImpl implements VaccinationService {
     public List<VaccinationDTO> getVaccinationByCentre(Long centreId) {
         return List.of();
     }
+
+    @Override
+    public List<VaccinationDTO> getVaccinationsByEnfantQrCode(String qrCode) {
+        try {
+
+            EnfantDTO enfant = userServiceClient.getEnfantByQrCode(qrCode);
+
+            if (enfant == null) {
+                throw new ResourceNotFoundException("Enfant non trouvé avec le code QR: " + qrCode);
+            }
+
+            Long enfantId = enfant.getId();
+            // 2. Récupérer la liste des vaccinations en utilisant l'enfantId
+            List<Vaccination> vaccinations = vaccinationRepository.getVaccinationByEnfantId(enfantId);
+            List<VaccinationDTO> vaccinationDTOS = vaccinations.stream().
+                    map(vaccinationMapper::fromEntity).
+                    collect(Collectors.toList());
+
+            return vaccinationDTOS;
+
+        } catch (Exception e) {
+            log.error("Erreur lors de la récupération des vaccinations par code QR {}: {}", qrCode, e.getMessage());
+            throw new RuntimeException("Impossible de récupérer les vaccinations pour ce QR Code.", e);
+        }
+
+    }
 }

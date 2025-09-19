@@ -9,6 +9,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="vaccine-service" />
         <module name="reminder-service" />
+        <module name="auth-service" />
         <module name="vaccination-service" />
         <module name="appointment-service" />
         <module name="location-service" />
@@ -27,10 +28,14 @@
         <module name="gateway-service" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="reminder-service" target="17" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="appointment-service" options="-parameters" />
+      <module name="auth-service" options="-parameters" />
       <module name="discovery-service" options="-parameters" />
       <module name="gateway-service" options="-parameters" />
       <module name="location-service" options="-parameters" />

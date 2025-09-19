@@ -11,6 +11,8 @@ import com.gestionvaccination.userservice.enumeration.UserRole;
 @Data
 public class SaveUtilisateurDTO {
 
+    private String password;
+
     private String email;
 
     @NotBlank(message = "L'age est obligatoire")

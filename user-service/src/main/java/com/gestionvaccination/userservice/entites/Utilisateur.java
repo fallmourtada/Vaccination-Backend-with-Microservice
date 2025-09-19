@@ -32,6 +32,8 @@ public class Utilisateur extends AbstractEntity {
 
     private String statutMatrimonial;
 
+    private String password;
+
     private String telephone;
     
     @Enumerated(EnumType.STRING)

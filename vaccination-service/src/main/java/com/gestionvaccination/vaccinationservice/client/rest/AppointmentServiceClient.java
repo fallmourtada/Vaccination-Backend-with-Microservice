@@ -3,13 +3,10 @@ package com.gestionvaccination.vaccinationservice.client.rest;
 
 import com.gestionvaccination.vaccinationservice.client.dto.AppointmentDTO;
 import com.gestionvaccination.vaccinationservice.client.dto.UpdateStatutAppointmentDTO;
-import com.gestionvaccination.vaccinationservice.config.FeignClientConfig;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
-@FeignClient(name = "APPOINTMENT-SERVICE",
-        contextId = "appointmentClient",
-        configuration = FeignClientConfig.class)
+@FeignClient(name = "appointment-service")
 public interface AppointmentServiceClient {
 
 

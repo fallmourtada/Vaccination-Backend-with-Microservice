@@ -3,6 +3,8 @@ package com.gestionvaccination.userservice.mapper;
 import com.gestionvaccination.userservice.client.dto.CentreDTO;
 import com.gestionvaccination.userservice.client.dto.LocalityDTO;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.gestionvaccination.userservice.dto.*;
 import com.gestionvaccination.userservice.entites.Utilisateur;
@@ -17,6 +19,10 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class UtilisateurMapper {
 
+    PasswordEncoder passwordEncoder()
+    {
+        return new BCryptPasswordEncoder();
+    }
     //private final EnfantMapper enfantMapper;
 
     /**
@@ -58,11 +64,11 @@ public class UtilisateurMapper {
             utilisateurDTO.setProfession(utilisateur.getProfession());
 
 
-        if (utilisateur.getCreatedAt() != null)
-            utilisateurDTO.setCreatedAt(utilisateur.getCreatedAt());
-
-        if (utilisateur.getUpdatedAt() != null)
-            utilisateurDTO.setUpdatedAt(utilisateur.getUpdatedAt());
+//        if (utilisateur.getCreatedAt() != null)
+//            utilisateurDTO.setCreatedAt(utilisateur.getCreatedAt());
+//
+//        if (utilisateur.getUpdatedAt() != null)
+//            utilisateurDTO.setUpdatedAt(utilisateur.getUpdatedAt());
 
         if(utilisateur.getNumeroTuteur1() != null)
             utilisateurDTO.setNumeroTuteur1(utilisateur.getNumeroTuteur1());
@@ -99,6 +105,10 @@ public class UtilisateurMapper {
 
         if (utilisateur.getCentre() != null) {
             utilisateurDTO.setCentre(utilisateur.getCentre());
+        }
+
+        if(utilisateur.getPassword()!=null){
+            utilisateurDTO.setPassword(utilisateur.getPassword());
         }
 
         return utilisateurDTO;
@@ -224,6 +234,7 @@ public class UtilisateurMapper {
         utilisateur.setMatricule(saveInfirmierDTO.getMatricule());
         utilisateur.setDateEmbauche(saveInfirmierDTO.getDateEmbauche());
         utilisateur.setAge(saveInfirmierDTO.getAge());
+        utilisateur.setPassword(passwordEncoder().encode(saveInfirmierDTO.getPassword()));
 
         if(centre.getId()!=null){
             utilisateur.setCentreId(centre.getId());
@@ -258,6 +269,7 @@ public class UtilisateurMapper {
         utilisateur.setNomTuteur1(saveParentDTO.getNomTuteur1());
         utilisateur.setNomTuteur2(saveParentDTO.getNomTuteur2());
         utilisateur.setTelephone(saveParentDTO.getTelephone());
+        utilisateur.setPassword(passwordEncoder().encode(saveParentDTO.getPassword()));
 
         if(centre.getId()!=null){
             utilisateur.setCentreId(centre.getId());

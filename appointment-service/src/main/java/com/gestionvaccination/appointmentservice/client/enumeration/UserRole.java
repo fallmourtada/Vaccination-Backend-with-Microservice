@@ -1,8 +1,10 @@
 package com.gestionvaccination.appointmentservice.client.enumeration;
 
 public enum UserRole {
-    INFIRMIER_CHEF_POSTE,
+
+    ICP,
     SAGE_FEMME,
+    INFIRMIER,
     ADMIN,
     PARENT
 }

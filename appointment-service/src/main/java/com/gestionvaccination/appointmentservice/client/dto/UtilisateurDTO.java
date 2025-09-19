@@ -1,29 +1,25 @@
 package com.gestionvaccination.appointmentservice.client.dto;
 
+import com.gestionvaccination.appointmentservice.client.dto.EnfantDTO;
 import com.gestionvaccination.appointmentservice.client.enumeration.UserRole;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * DTO pour retourner les données d'un utilisateur
  */
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class UtilisateurDTO {
 
     private Long id;
 
     private String email;
 
-    private String age;
+    private Long age;
 
     private String statutMatrimonial;
 
@@ -38,6 +34,8 @@ public class UtilisateurDTO {
 
     private String nom;
 
+    private String password;
+
     private String adresse;
 
     private String matricule;
@@ -49,7 +47,7 @@ public class UtilisateurDTO {
 
     private String niveauEtude;
 
-    private Set<UserRole> roles;
+    private Set<UserRole> roles ;
 
 
     private LocalityDTO locality;
@@ -68,9 +66,11 @@ public class UtilisateurDTO {
 
     private String numeroTuteur2;
 
-    private Date createdAt;
+//    private Date createdAt;
+//
+//    private Date updatedAt;
+//
+//    private List<EnfantDTO> enfants;
 
-    private Date updatedAt;
 
-    private List<EnfantDTO> enfants;
 }

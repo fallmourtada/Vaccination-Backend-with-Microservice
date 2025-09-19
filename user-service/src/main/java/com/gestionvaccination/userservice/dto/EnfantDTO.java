@@ -15,9 +15,9 @@ import java.util.List;
 public class EnfantDTO {
     private Long id;
 
-    private String contenu_qr_code;
+    private String contenuQrCcode;
 
-    private String  qr_code;
+    private String  qrCode;
 
     private String prenom;
 

@@ -39,6 +39,8 @@ public class UtilisateurDTO {
 
     private String nom;
 
+    private String password;
+
     private String adresse;
 
     private String matricule;
@@ -69,11 +71,11 @@ public class UtilisateurDTO {
 
     private String numeroTuteur2;
 
-    private Date createdAt;
-
-    private Date updatedAt;
-
-    private List<EnfantDTO> enfants;
+//    private Date createdAt;
+//
+//    private Date updatedAt;
+//
+//    private List<EnfantDTO> enfants;
 
 
 }

@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -26,6 +27,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/v1/localities/types")
+@SecurityRequirement(name = "bearerAuth") // C'est ici que tu appliques la sécurité
 @Tag(name = "Types de Localités", description = "API pour la gestion des différents types de localités (régions, départements, arrondissements, communes, quartiers)")
 public class LocalityTypeController {
 

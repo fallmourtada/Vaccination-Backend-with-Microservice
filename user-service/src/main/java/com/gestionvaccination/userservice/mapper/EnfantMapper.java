@@ -44,14 +44,14 @@ public class EnfantMapper {
             enfantDTO.setLieuNaissance(enfant.getLieuNaissance());
 
 
-       if(enfant.getQr_code()!=null)
-           enfantDTO.setQr_code(enfant.getQr_code());
+       if(enfant.getQrCode()!=null)
+           enfantDTO.setQrCode(enfant.getQrCode());
 
         if (enfant.getAllergies() != null)
             enfantDTO.setAllergies(enfant.getAllergies());
 
-        if(enfant.getContenu_qr_code()!=null)
-            enfantDTO.setContenu_qr_code(enfant.getContenu_qr_code());
+        if(enfant.getContenuQrCode()!=null)
+            enfantDTO.setContenuQrCcode(enfant.getContenuQrCode());
 
         if (enfant.getGroupeSanguin() != null)
             enfantDTO.setGroupeSanguin(enfant.getGroupeSanguin());

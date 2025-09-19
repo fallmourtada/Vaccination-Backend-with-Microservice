@@ -1,9 +1,11 @@
 package com.gestionvaccination.userservice.controller;
 
+import com.gestionvaccination.userservice.client.dto.EnfantAvecVaccinationsDTO;
 import com.google.zxing.WriterException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
@@ -27,7 +29,7 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 @RequestMapping("/api/v1/users/enfants")
 @Tag(name = "Gestion des Enfants", description = "APIs pour la gestion des enfants dans le système de vaccination")
-@Validated
+@SecurityRequirement(name = "bearerAuth") // C'est ici que tu appliques la sécurité
 @AllArgsConstructor
 public class EnfantController {
     private final EnfantService enfantService;
@@ -73,7 +75,7 @@ public class EnfantController {
 
 
 
-    @GetMapping("/qr/{codeQr}")
+    @GetMapping("/by-qr-code/{qrCode}")
     @Operation(
             summary = "Obtenir un enfant par code QR",
             description = "Récupère les détails d'un enfant grâce à son code QR"
@@ -143,5 +145,37 @@ public class EnfantController {
 //        List<EnfantDTO> enfants = enfantService.getEnfantByParentId(parentId);
 //        return ResponseEntity.ok(enfants);
 //    }
+
+
+
+
+
+//    @GetMapping("/by-qr-code/{qrCode}/with-vaccinations")
+//    @Operation(
+//            summary = "Obtenir un enfant + ses vaccinations par code QR",
+//            description = "Récupère les détails d'un enfant + sa liste de vaccinations"
+//    )
+//    @ApiResponses(value = {
+//            @ApiResponse(responseCode = "200", description = "Enfant trouvé avec ses vaccinations"),
+//            @ApiResponse(responseCode = "404", description = "Enfant non trouvé avec ce code QR")
+//    })
+//    public ResponseEntity<EnfantAvecVaccinationsDTO> obtenirEnfantAvecVaccinationsParCodeQr(
+//            @Parameter(description = "Code QR de l'enfant") @PathVariable String qrCode) {
+//
+//        EnfantAvecVaccinationsDTO enfantAvecVaccinations = enfantService.getEnfantByQrCode(qrCode);
+//        return ResponseEntity.ok(enfantAvecVaccinations);
+//    }
+
+
+    /**
+     * Récupérer les infos de l'enfant + ses vaccinations via son QR code
+     */
+    @GetMapping("/by-qr-code/{qrCode}/with-vaccinations")
+    public ResponseEntity<EnfantAvecVaccinationsDTO> obtenirEnfantAvecVaccinationsParCodeQr(
+            @PathVariable String qrCode) {
+        return ResponseEntity.ok(enfantService.getEnfantWithVaccinationsByQrCode(qrCode));
+    }
+
+
 
 }

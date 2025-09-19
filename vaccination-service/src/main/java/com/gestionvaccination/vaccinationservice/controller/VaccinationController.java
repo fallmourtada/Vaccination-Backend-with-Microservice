@@ -1,5 +1,8 @@
 package com.gestionvaccination.vaccinationservice.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -18,6 +21,7 @@ import java.util.List;
 @RequestMapping("/api/v1/vaccinations")
 @AllArgsConstructor
 @CrossOrigin("*")
+@SecurityRequirement(name = "bearerAuth") // C'est ici que tu appliques la sécurité
 
 public class VaccinationController {
     private final VaccinationService vaccinationService;
@@ -53,6 +57,20 @@ public class VaccinationController {
     @GetMapping("/vaccine/{vaccineId}")
     public ResponseEntity<List<VaccinationDTO>> parVaccine(@PathVariable Long vaccineId) {
         return ResponseEntity.ok(vaccinationService.getVaccinationByVaccin(vaccineId));
+    }
+
+
+    @GetMapping("/byQrCode/{qrCode}")
+    @Operation(
+            summary = "Obtenir tous les vaccinations par son codeQr",
+            description = "Obtenir tous les vaccinations par son codeQr"
+    )
+    @ApiResponse(responseCode = "200", description = "Obtenir tous les vaccinations par son codeQr")
+    public ResponseEntity<List<VaccinationDTO>> getVaccinationListByCodeQr(@PathVariable String qrCode) {
+
+        List<VaccinationDTO> vaccinationDTOS = vaccinationService.getVaccinationsByEnfantQrCode(qrCode);
+
+        return ResponseEntity.ok(vaccinationDTOS);
     }
 
 

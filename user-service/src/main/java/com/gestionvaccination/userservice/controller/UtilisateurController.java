@@ -1,14 +1,20 @@
 package com.gestionvaccination.userservice.controller;
 
+import com.gestionvaccination.userservice.entites.Utilisateur;
 import com.gestionvaccination.userservice.enumeration.UserRole;
+import com.gestionvaccination.userservice.repository.UtilisateurRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import com.gestionvaccination.userservice.dto.*;
 import com.gestionvaccination.userservice.services.UtilisateurService;
@@ -21,10 +27,17 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/users")
 @Tag(name = "Gestion des Utilisateurs", description = "APIs pour la gestion des utilisateurs du système de vaccination")
+@SecurityRequirement(name = "bearerAuth") // C'est ici que tu appliques la sécurité
 @AllArgsConstructor
 public class UtilisateurController {
+    private final UtilisateurRepository userRepository;
+
+    private final PasswordEncoder passwordEncoder ;
     
     private final UtilisateurService utilisateurService;
+
+
+
 
     @PostMapping("/parent")
     @Operation(
@@ -119,7 +132,10 @@ public class UtilisateurController {
         return ResponseEntity.ok(utilisateur);
     }
 
-    @GetMapping("/email/{email}")
+
+
+
+    @GetMapping("/findUserByEmail/{email}")
     @Operation(
         summary = "Obtenir un utilisateur par email",
         description = "Récupère les détails d'un utilisateur par son email"
@@ -209,4 +225,24 @@ public class UtilisateurController {
         return ResponseEntity.ok(utilisateurs);
     }
 
+     // Endpoint pour la validation d'authentification
+    @GetMapping("/validate")
+    public ResponseEntity<Boolean> validateUser(
+            @RequestParam String username,
+            @RequestParam String password) {
+        
+        // Pour tester, retournez simplement true
+        // Plus tard, vous ajouterez la validation réelle
+        return ResponseEntity.ok(true);
+    }
+
+
+
+
+
+
+
+
+
+   
 }

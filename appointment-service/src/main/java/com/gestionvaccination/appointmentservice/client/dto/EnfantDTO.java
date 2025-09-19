@@ -1,34 +1,51 @@
 package com.gestionvaccination.appointmentservice.client.dto;
 
+
+import com.gestionvaccination.appointmentservice.client.enumeration.Sexe;
+import lombok.Data;
+
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.List;
 
 /**
- * DTO simplifié pour représenter un enfant provenant du user-service
+ * DTO pour retourner les données d'un enfant
  */
+@Data
 public class EnfantDTO {
     private Long id;
-    private String nom;
+
+    private String contenu_qr_code;
+
+    private String  qr_code;
+
     private String prenom;
+
+    private String nom;
+
     private LocalDate dateNaissance;
-    private String sexe;
-    private Long localityId;
 
-    // getters et setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    private Sexe sexe;
 
-    public String getNom() { return nom; }
-    public void setNom(String nom) { this.nom = nom; }
+    private String lieuNaissance;
 
-    public String getPrenom() { return prenom; }
-    public void setPrenom(String prenom) { this.prenom = prenom; }
+    private String allergies;
 
-    public LocalDate getDateNaissance() { return dateNaissance; }
-    public void setDateNaissance(LocalDate dateNaissance) { this.dateNaissance = dateNaissance; }
+    private String groupeSanguin;
 
-    public String getSexe() { return sexe; }
-    public void setSexe(String sexe) { this.sexe = sexe; }
+    private Double poids; // en kg
 
-    public Long getLocalityId() { return localityId; }
-    public void setLocalityId(Long localityId) { this.localityId = localityId; }
+    private Double taille; // en cm
+
+    private UtilisateurDTO parent;
+
+    private Date createdAt;
+
+    private Date updatedAt;
+
+
 }
+
+
+

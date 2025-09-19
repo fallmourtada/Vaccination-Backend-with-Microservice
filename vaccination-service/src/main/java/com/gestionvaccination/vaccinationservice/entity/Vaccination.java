@@ -20,7 +20,7 @@ import java.time.LocalTime;
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class Vaccination extends AbstractEntity {
+public class   Vaccination extends AbstractEntity {
 
 //    private boolean estEffectuer;
 

@@ -27,4 +27,6 @@ public interface VaccinationService {
 
     List<VaccinationDTO> getVaccinationByCentre(Long centreId);
 
+    List<VaccinationDTO> getVaccinationsByEnfantQrCode(String qrCode);
+
 }

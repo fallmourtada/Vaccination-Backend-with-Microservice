@@ -17,10 +17,11 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Enfant extends AbstractEntity {
+    private  String accessToken;
 
-    private String contenu_qr_code;
+    private String contenuQrCode;
 
-    private String  qr_code;
+    private String  qrCode;
 
     @Column(nullable = false)
     private String prenom;
