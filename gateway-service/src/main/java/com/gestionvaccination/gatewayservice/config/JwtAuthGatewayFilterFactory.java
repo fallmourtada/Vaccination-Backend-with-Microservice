@@ -24,31 +24,63 @@ import java.util.List;
 /**
  * Filtre de passerelle personnalisé pour valider les tokens JWT.
  * Ce filtre est appliqué aux routes sécurisées.
- *
- * ATTENTION: Le nom de la classe doit se terminer par 'GatewayFilterFactory' pour
- * que Spring Cloud Gateway la reconnaisse sous le nom court 'JwtAuth' dans la configuration.
  */
 @RefreshScope
 @Component
 public class JwtAuthGatewayFilterFactory extends AbstractGatewayFilterFactory<JwtAuthGatewayFilterFactory.Config> {
 
-    @Value("${app.jwt-secret}")
-    private String secretKey;
 
-    // Remplacement du constructeur pour correspondre au nouveau nom de classe
-    public JwtAuthGatewayFilterFactory() {
+    // Rendre ce champ 'final' car il sera initialisé dans le constructeur.
+    private final String secretKey;
+
+//    @Value("${app.jwt-secret}")
+//    private String secretKey;
+//
+//    public JwtAuthGatewayFilterFactory() {
+//        super(Config.class);
+//    }
+
+    // ATTENTION : Ce constructeur est MAINTENANT OBLIGATOIRE
+    // Il permet à Spring de passer la valeur de la propriété lors de la création du bean.
+    public JwtAuthGatewayFilterFactory(@Value("${app.jwt-secret}") String secretKey) {
         super(Config.class);
+        this.secretKey = secretKey; // Assignation du secret à la variable de classe
     }
 
     // Liste des préfixes de chemins publics qui NE DOIVENT PAS être sécurisés par JWT
     public static final List<String> PUBLIC_PATHS = Arrays.asList(
             "/api/auth/v1",                     // Route vers le service d'authentification
-            "/api/v1/users/public",             // Exemple : Endpoint public dans USER-SERVICE
-            "/api/v1/localities/all",           // Exemple : Endpoint public dans LOCATION-SERVICE (Keep-Alive)
-            "/api/v1/localities/all-available"  // Exemple: Ajout d'une nouvelle route publique
-            // AJOUTEZ ICI tous les autres chemins publics
+            "/api/v1/users",                   // Make base user endpoint public
+            "/api/v1/users/",                  // Including trailing slash
+            "/api/v1/users/validate",          // User validation endpoint
+            "/api/v1/users/register",          // Registration endpoint
+            "/api/v1/users/login",// Exemple: Ajout d'une nouvelle route
+            " /v3/api-docs/**",                 // Swagger docs\n" +
+            "/swagger-ui/**",                  // Swagger UI\n" +
+            "/swagger-ui.html ",
+            "/api/v1/localities/centres/{centreId}",
+            "/api/v1/localities/{localityId}",
+            "/api/v1/vaccines/{vaccinId}",
+            "/api/v1/vaccinations/byQrCode/",
+            "/api/v1/vaccinations/byQrCode/**",
+            "/api/v1/vaccinations/by-qr-code/{qrCode}/with-vaccinations",
+            "/api/v1/vaccinations/enfant/**",
+            "/api/v1/vaccines/**",
+            "/api/v1/vaccines/{vaccineId}",
+            "/api/v1/appointments/**",
+            "/api/v1/appointments/{appointmentId}",
+            "/api/v1/users/{userId}",
+            "/api/v1/users/enfants/{enfantId}",
+            "/api/v1/appointments/{appointmentId}/status",
+            "/api/v1/users/{userId}",
+            "/api/auth/v1/users",
+            "/api/v1/users/enfants/{enfantId}",
+            "/api/v1/users/enfants/by-qr-code/{qrCode}",
+            "/api/v1/users/findUserByEmail/{email}",
+            "/api/v1/users/stats/by-centre/{centreId}/enfants","/api/v1/appointments/test-reminders",
+            "/api/v1/appointments/{appointmentId}",
+            "/api/v1/appointments/{appointmentId}/status"
     );
-
 
     @Override
     public GatewayFilter apply(Config config) {
@@ -112,8 +144,6 @@ public class JwtAuthGatewayFilterFactory extends AbstractGatewayFilterFactory<Jw
                 .noneMatch(path::startsWith);
     }
 
-    // --- Logique d'extraction et de validation du JWT ---
-
     public void validateToken(String token) {
         Jwts.parserBuilder().setSigningKey(getSigningKey()).build().parseClaimsJws(token);
     }
@@ -131,7 +161,6 @@ public class JwtAuthGatewayFilterFactory extends AbstractGatewayFilterFactory<Jw
             byte[] keyBytes = Decoders.BASE64.decode(secretKey);
             return Keys.hmacShaKeyFor(keyBytes);
         } catch (Exception e) {
-            // Lancer une erreur critique si la clé est mal configurée
             throw new RuntimeException("Problème critique avec la clé JWT dans la Gateway : " + e.getMessage());
         }
     }
