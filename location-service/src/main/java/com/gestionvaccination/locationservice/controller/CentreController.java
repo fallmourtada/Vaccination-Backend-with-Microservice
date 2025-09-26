@@ -70,20 +70,18 @@ public class CentreController {
     }
 
 
+
+
     /**
-     * Récupère la liste de tous les centres
-     *
-     * @return la liste de tous les centres
+     * Endpoint pour récupérer la liste des centres d'un district.
+     * @param districtId L'identifiant du district.
+     * @return La liste des centres.
      */
-    @Operation(summary = "Récupérer tous les centres", description = "Retourne la liste de tous les centres de vaccination")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Liste des centres récupérée avec succès",
-                    content = { @Content(mediaType = "application/json", schema = @Schema(implementation = CentreDTO.class)) }),
-            @ApiResponse(responseCode = "500", description = "Erreur interne du serveur")
-    })
-    @GetMapping("/parent/{parentId}")
-    public ResponseEntity<List<CentreDTO>> getAll(@PathVariable Long parentId) {
-        return ResponseEntity.ok(centreService.findByParentId(parentId));
+    @GetMapping("/by-district/{districtId}")
+    @Operation(summary = "Récupérer les centres d'un district",
+            description = "Retourne la liste de tous les centres de santé rattachés à un district donné.")
+    public List<CentreDTO> getCentresByDistrict(@PathVariable Long districtId) {
+        return centreService.getCentresByDistrict(districtId);
     }
 
 

@@ -1,54 +1,42 @@
 package com.gestionvaccination.userservice.client.dto;
 
+import com.gestionvaccination.userservice.client.enumeration.StatutVaccination;
+import com.gestionvaccination.userservice.dto.EnfantDTO;
+import jakarta.persistence.Column;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 /**
- * DTO représentant une vaccination depuis vaccination-service
+ * DTO pour retourner les informations d'une vaccination
  */
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
+
 public class VaccinationDTO {
-    
     private Long id;
-    
-    private Long enfantId;
-    
-    private Long vaccineId;
-    
-    private LocalDate dateVaccination;
-    
-    private String lieuVaccination;
-    
-    private String numeroLot;
-    
-    private LocalDate dateExpiration;
-    
-    private String professionnelSanteId;
-    
-    private String dosage;
-    
-    private String voieAdministration;
-    
-    private String observations;
-    
-    private String statut; // PLANIFIEE, EFFECTUEE, REPORTEE, ANNULEE
-    
-    private Boolean rappelNecessaire;
-    
-    private LocalDate prochainRappel;
-    
-    private LocalDateTime dateCreation;
-    
-    private LocalDateTime dateModification;
-    
-    // Objets enrichis depuis d'autres microservices
-    private VaccineDTO vaccine; // Données du vaccin depuis vaccine-service
-    
-    private Object professionnelSante; // Données du professionnel depuis user-service
+
+//    private boolean estEffectuer;
+
+
+    private StatutVaccination statutVaccination;
+
+
+
+    private LocalDate date;
+
+
+    private UtilisateurDTO utilisateur;
+
+    private AppointmentDTO appointment;
+
+    private VaccineDTO vaccine;
+
+    private EnfantDTO enfant;
 }

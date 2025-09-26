@@ -1,6 +1,8 @@
 package com.gestionvaccination.vaccinationservice.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
@@ -15,7 +17,9 @@ import com.gestionvaccination.vaccinationservice.dto.SaveVaccinationDTO;
 import com.gestionvaccination.vaccinationservice.dto.UpdateVaccinationDTO;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/vaccinations")
@@ -57,20 +61,6 @@ public class VaccinationController {
     @GetMapping("/vaccine/{vaccineId}")
     public ResponseEntity<List<VaccinationDTO>> parVaccine(@PathVariable Long vaccineId) {
         return ResponseEntity.ok(vaccinationService.getVaccinationByVaccin(vaccineId));
-    }
-
-
-    @GetMapping("/byQrCode/{qrCode}")
-    @Operation(
-            summary = "Obtenir tous les vaccinations par son codeQr",
-            description = "Obtenir tous les vaccinations par son codeQr"
-    )
-    @ApiResponse(responseCode = "200", description = "Obtenir tous les vaccinations par son codeQr")
-    public ResponseEntity<List<VaccinationDTO>> getVaccinationListByCodeQr(@PathVariable String qrCode) {
-
-        List<VaccinationDTO> vaccinationDTOS = vaccinationService.getVaccinationsByEnfantQrCode(qrCode);
-
-        return ResponseEntity.ok(vaccinationDTOS);
     }
 
 

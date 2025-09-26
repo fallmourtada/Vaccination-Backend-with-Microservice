@@ -1,8 +1,11 @@
 package com.gestionvaccination.userservice.controller;
 
 import com.gestionvaccination.userservice.client.dto.EnfantAvecVaccinationsDTO;
+import com.gestionvaccination.userservice.client.dto.VaccinationDTO;
 import com.google.zxing.WriterException;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -20,7 +23,9 @@ import com.gestionvaccination.userservice.services.EnfantService;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Contrôleur REST pour la gestion des enfants
@@ -150,31 +155,47 @@ public class EnfantController {
 
 
 
-//    @GetMapping("/by-qr-code/{qrCode}/with-vaccinations")
-//    @Operation(
-//            summary = "Obtenir un enfant + ses vaccinations par code QR",
-//            description = "Récupère les détails d'un enfant + sa liste de vaccinations"
-//    )
-//    @ApiResponses(value = {
-//            @ApiResponse(responseCode = "200", description = "Enfant trouvé avec ses vaccinations"),
-//            @ApiResponse(responseCode = "404", description = "Enfant non trouvé avec ce code QR")
-//    })
-//    public ResponseEntity<EnfantAvecVaccinationsDTO> obtenirEnfantAvecVaccinationsParCodeQr(
-//            @Parameter(description = "Code QR de l'enfant") @PathVariable String qrCode) {
-//
-//        EnfantAvecVaccinationsDTO enfantAvecVaccinations = enfantService.getEnfantByQrCode(qrCode);
-//        return ResponseEntity.ok(enfantAvecVaccinations);
-//    }
+    @GetMapping("/by-access-token/{accessToken}/with-vaccinations")
+    @Operation(
+            summary = "Obtenir un enfant + ses vaccinations par code QR",
+            description = "Récupère les détails d'un enfant + sa liste de vaccinations"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Enfant trouvé avec ses vaccinations"),
+            @ApiResponse(responseCode = "404", description = "Enfant non trouvé avec ce code QR")
+    })
+    public ResponseEntity <List<VaccinationDTO>> getVaccinationListByAccessToken(
+            @Parameter(description = "Code QR de l'enfant") @PathVariable String accessToken) {
 
-
-    /**
-     * Récupérer les infos de l'enfant + ses vaccinations via son QR code
-     */
-    @GetMapping("/by-qr-code/{qrCode}/with-vaccinations")
-    public ResponseEntity<EnfantAvecVaccinationsDTO> obtenirEnfantAvecVaccinationsParCodeQr(
-            @PathVariable String qrCode) {
-        return ResponseEntity.ok(enfantService.getEnfantWithVaccinationsByQrCode(qrCode));
+        List<VaccinationDTO> vaccinationDTOS  = enfantService.getEnfantWithVaccinationsByAccessToken(accessToken);
+        return ResponseEntity.ok(vaccinationDTOS);
     }
+
+
+
+
+
+    @GetMapping("/stats/total")
+    @Operation(
+            summary = "Obtenir le nombre total de garçons et de filles vaccinés",
+            description = "Retourne le nombre total d'enfants enregistrés, ainsi que la répartition par sexe (garçons et filles)."
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Statistiques récupérées avec succès",
+            content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = Map.class))
+    )
+    public Map<String, Long> getComptageGlobal() {
+        Map<String, Long> stats = new HashMap<>();
+        stats.put("nombreTotalEnfants", enfantService.getNombreTotalEnfants());
+        stats.put("nombreTotalFilles", enfantService.getNombreFilles());
+        stats.put("nombreTotalGarcons", enfantService.getNombreGarcons());
+        return stats;
+    }
+
+
+
 
 
 

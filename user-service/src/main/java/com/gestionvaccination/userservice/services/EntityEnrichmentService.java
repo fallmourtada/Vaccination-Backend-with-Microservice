@@ -2,6 +2,7 @@ package com.gestionvaccination.userservice.services;
 
 import com.gestionvaccination.userservice.client.dto.CentreDTO;
 import com.gestionvaccination.userservice.client.dto.LocalityDTO;
+import com.gestionvaccination.userservice.client.dto.VaccinationDTO;
 import com.gestionvaccination.userservice.client.rest.LocationServiceClient;
 import com.gestionvaccination.userservice.entites.Utilisateur;
 import lombok.AllArgsConstructor;
@@ -106,6 +107,11 @@ public class EntityEnrichmentService {
         }
 
         users.forEach(this::enrichUtilisateurWithAllData);
+
+    }
+
+
+    public void enrichEnfantWithVaccination(VaccinationDTO vaccinationDTO) {
 
     }
 

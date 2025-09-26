@@ -4,6 +4,7 @@ import com.gestionvaccination.userservice.client.dto.EnfantAvecVaccinationsDTO;
 import com.gestionvaccination.userservice.client.dto.VaccinationDTO;
 import com.gestionvaccination.userservice.client.rest.VaccinationServiceClient;
 import com.gestionvaccination.userservice.entites.QrCodeGenerator;
+import com.gestionvaccination.userservice.enumeration.Sexe;
 import com.google.zxing.WriterException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -53,26 +54,26 @@ public class EnfantServiceImpl implements EnfantService {
     }
 
 
-//    @Override
-//    public EnfantDTO saveEnfant(SaveEnfantDTO saveEnfantDTO,Long parentId) throws IOException, WriterException {
-//
-//        Utilisateur utilisateur = utilisateurRepository.findById(parentId).orElseThrow(
-//                () -> new ResourceNotFoundException("parent non Trouver Avec Id" + parentId));
-//
-//        Enfant enfant = enfantMapper.fromSaveEnfantDTO(saveEnfantDTO, utilisateur);
-//
-//        // Génération de l'accessToken et du QR Code uniquement pour les nouveaux utilisateurs
-////        String accessToken = UUID.randomUUID().toString();
-////        String contenuQRCode =  accessToken;
-////        String directoryPath = "qr_codes";
-////        ensureDirectoryExists(directoryPath);
-////        String filePath = directoryPath + "/enfant_" + saveEnfantDTO.getPrenom()+ '-'+ saveEnfantDTO.getNom() +'_'+ saveEnfantDTO.getParentId() + "_qr.png";
-////        QrCodeGenerator.generateQRCode(contenuQRCode, filePath);
-////        enfant.setQrCode(filePath);
-////        enfant.setContenuQrCode(contenuQRCode);
-//
-//
-//            // Contenu du QR code
+    @Override
+    public EnfantDTO saveEnfant(SaveEnfantDTO saveEnfantDTO,Long parentId) throws IOException, WriterException {
+
+        Utilisateur utilisateur = utilisateurRepository.findById(parentId).orElseThrow(
+                () -> new ResourceNotFoundException("parent non Trouver Avec Id" + parentId));
+
+        Enfant enfant = enfantMapper.fromSaveEnfantDTO(saveEnfantDTO, utilisateur);
+
+        // Génération de l'accessToken et du QR Code uniquement pour les nouveaux utilisateurs
+//        String accessToken = UUID.randomUUID().toString();
+//        String contenuQRCode =  accessToken;
+//        String directoryPath = "qr_codes";
+//        ensureDirectoryExists(directoryPath);
+//        String filePath = directoryPath + "/enfant_" + saveEnfantDTO.getPrenom()+ '-'+ saveEnfantDTO.getNom() +'_'+ saveEnfantDTO.getParentId() + "_qr.png";
+//        QrCodeGenerator.generateQRCode(contenuQRCode, filePath);
+//        enfant.setQrCode(filePath);
+//        enfant.setContenuQrCode(contenuQRCode);
+
+
+            // Contenu du QR code
 //            String contenuQRCode = "Nom: " + enfant.getNom() +
 //                    " Prenom" + enfant.getPrenom() +
 //                    " Date De Naissance: " + enfant.getDateNaissance()+
@@ -80,56 +81,33 @@ public class EnfantServiceImpl implements EnfantService {
 //                    " Nom Parent : " + enfant.getParent().getNom()+
 //                    " Telephone : " + enfant.getParent().getTelephone()+
 //                    " Adresse : " + enfant.getParent().getAdresse();
-//
-//            // Générer le fichier QR code
-//            String filePath = "qr_codes/etudiant_" + enfant.getParent().getTelephone() + "_qr.png";
-//            QrCodeGenerator.generateQRCode(contenuQRCode, filePath);
-//
-//            // Ajouter les informations de QR code à l'entité Étudiant
-//            enfant.setContenuQrCode(contenuQRCode);
-//            enfant.setQrCode(filePath);
-//
-//
-//
-//
-//
-//
-//
-//        Enfant enfant1 = enfantRepository.save(enfant);
-//
-//        return enfantMapper.fromEntity(enfant1);
-//    }
 
-
-
-        @Override
-        public EnfantDTO saveEnfant(SaveEnfantDTO saveEnfantDTO, Long parentId) throws IOException, WriterException {
-
-            Utilisateur utilisateur = utilisateurRepository.findById(parentId).orElseThrow(
-                    () -> new ResourceNotFoundException("Parent non trouvé avec Id " + parentId));
-
-            Enfant enfant = enfantMapper.fromSaveEnfantDTO(saveEnfantDTO, utilisateur);
-
-            // Sauvegarde initiale pour obtenir l'ID généré
-            enfant = enfantRepository.save(enfant);
-
-            // ⚡ Utiliser l'ID de l'enfant comme contenu du QR code
-            String contenuQRCode = enfant.getId().toString();
-
-            // Générer le fichier QR code
+            // Génération de l'accessToken et du QR Code uniquement pour les nouveaux utilisateurs
+            String accessToken = UUID.randomUUID().toString();
+            enfant.setAccessToken(accessToken);
+            String contenuQRCode = "http://localhost:3000/public-access/" + accessToken;
             String directoryPath = "qr_codes";
             ensureDirectoryExists(directoryPath);
-            String filePath = directoryPath + "/enfant_" + enfant.getId() + "_qr.png";
+            String filePath = directoryPath + "/enfant_" + saveEnfantDTO.getNom()+"_qr.png";
             QrCodeGenerator.generateQRCode(contenuQRCode, filePath);
-
-            enfant.setContenuQrCode(contenuQRCode);
             enfant.setQrCode(filePath);
+            enfant.setContenuQrCode(contenuQRCode);
 
-            // Sauvegarde finale avec le QR code
-            enfant = enfantRepository.save(enfant);
+            Enfant enfant1 = enfantRepository.save(enfant);
 
-            return enfantMapper.fromEntity(enfant);
-        }
+            return enfantMapper.fromEntity(enfant1);
+    }
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -198,6 +176,7 @@ public class EnfantServiceImpl implements EnfantService {
 //        return null;
 //    }
 
+
     @Override
     public List<EnfantDTO> getAllEnfants() {
         List<Enfant> enfants = enfantRepository.findAll();
@@ -208,39 +187,36 @@ public class EnfantServiceImpl implements EnfantService {
     }
 
 
+
+
     @Override
-    public EnfantAvecVaccinationsDTO getEnfantByQrCode(String codeQr) {
-        Enfant enfant = enfantRepository.findByContenuQrCode(codeQr)
-                .orElseThrow(() -> new ResourceNotFoundException("Enfant non trouvé avec le code QR: " + codeQr));
+    public List<VaccinationDTO> getEnfantWithVaccinationsByAccessToken(String accessToken) {
+        Enfant enfant = enfantRepository.findByAccessToken(accessToken)
+                .orElseThrow(() -> new ResourceNotFoundException("Enfant non trouvé avec accessToken: " + accessToken));
 
         EnfantDTO enfantDTO = enfantMapper.fromEntity(enfant);
 
-        // 🔥 Appel au VaccinationService
-        List<VaccinationDTO> vaccinations = vaccinationServiceClient.getVaccinationsByQrCode(codeQr);
+        // 🔥 Récupérer les vaccinations via VaccinationService
+        List<VaccinationDTO> vaccinations = vaccinationServiceClient.getVaccinationsByEnfant(enfant.getId());
 
-        return new EnfantAvecVaccinationsDTO(enfantDTO, vaccinations);
+
+        return vaccinations;
     }
 
-
-    public EnfantAvecVaccinationsDTO getEnfantWithVaccinations(Long enfantId) {
-        EnfantDTO enfant = enfantRepository.findById(enfantId)
-                .map(enfantMapper::fromEntity)
-                .orElseThrow(() -> new ResourceNotFoundException("Enfant non trouvé avec id " + enfantId));
-
-        List<VaccinationDTO> vaccinations = vaccinationServiceClient.getVaccinationsByEnfant(enfantId);
-
-        EnfantAvecVaccinationsDTO dto = new EnfantAvecVaccinationsDTO();
-        dto.setEnfant(enfant);
-        dto.setVaccinations(vaccinations);
-
-        return dto;
+    @Override
+    public long getNombreTotalEnfants() {
+        return enfantRepository.count();
     }
 
-    public EnfantAvecVaccinationsDTO getEnfantWithVaccinationsByQrCode(String qrCode) {
-        Long enfantId = Long.parseLong(qrCode); // car ton QR code stocke juste l'id
-        return getEnfantWithVaccinations(enfantId);
+    @Override
+    public long getNombreFilles() {
+        return enfantRepository.countBySexe(Sexe.FEMININ);
     }
 
+    @Override
+    public long getNombreGarcons() {
+        return enfantRepository.countBySexe(Sexe.MASCULIN);
+    }
 
 
 }

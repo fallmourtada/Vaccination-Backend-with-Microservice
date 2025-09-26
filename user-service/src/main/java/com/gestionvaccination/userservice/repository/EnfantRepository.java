@@ -20,4 +20,9 @@ import java.util.Optional;
 public interface EnfantRepository extends JpaRepository<Enfant, Long> {
     Optional<Enfant> findByContenuQrCode(String contenuQrCode);
 
+    Optional<Enfant> findByAccessToken(String accessToken);
+
+    // Compte le nombre d'enfants par sexe
+    long countBySexe(Sexe sexe);
+
 }
