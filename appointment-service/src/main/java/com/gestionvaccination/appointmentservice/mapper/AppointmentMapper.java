@@ -47,7 +47,7 @@ public class AppointmentMapper {
         Appointment appointment = new Appointment();
         appointment.setNomVaccinAEffectuer(saveAppointmentDTO.getNomVaccinAEffectuer());
         appointment.setStatut(StatutRv.EN_ATTENTE);
-        appointment.setDate(LocalDate.now());
+        appointment.setDate(saveAppointmentDTO.getDate());
 
 
         if(utilisateur.getId()!=null){

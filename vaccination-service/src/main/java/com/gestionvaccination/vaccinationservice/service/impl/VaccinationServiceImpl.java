@@ -1,11 +1,13 @@
 package com.gestionvaccination.vaccinationservice.service.impl;
 
 import com.gestionvaccination.vaccinationservice.client.dto.*;
+import com.gestionvaccination.vaccinationservice.client.enumeration.Sexe;
 import com.gestionvaccination.vaccinationservice.client.enumeration.StatutRv;
 import com.gestionvaccination.vaccinationservice.client.rest.AppointmentServiceClient;
 import com.gestionvaccination.vaccinationservice.client.rest.UserServiceClient;
 import com.gestionvaccination.vaccinationservice.client.rest.VaccinServiceClient;
 import com.gestionvaccination.vaccinationservice.entity.Vaccination;
+import com.gestionvaccination.vaccinationservice.enumeration.StatutVaccination;
 import com.gestionvaccination.vaccinationservice.exception.ResourceNotFoundException;
 import com.gestionvaccination.vaccinationservice.service.EntityEnrichmentService;
 import jakarta.persistence.EntityManager;
@@ -169,7 +171,7 @@ public class VaccinationServiceImpl implements VaccinationService {
 
     @Override
     public List<VaccinationDTO> getVaccinationByEnfant(Long enfantId) {
-        List<Vaccination> vaccinations = vaccinationRepository.getVaccinationByEnfantId(enfantId);
+        List<Vaccination> vaccinations = vaccinationRepository.findByEnfantId(enfantId);
 
         entityEnrichmentService.enrichVaccinationsWithAllData(vaccinations);
 
@@ -191,29 +193,11 @@ public class VaccinationServiceImpl implements VaccinationService {
         return List.of();
     }
 
-    @Override
-    public List<VaccinationDTO> getVaccinationsByEnfantQrCode(String qrCode) {
-        try {
 
-            EnfantDTO enfant = userServiceClient.getEnfantByQrCode(qrCode);
 
-            if (enfant == null) {
-                throw new ResourceNotFoundException("Enfant non trouvé avec le code QR: " + qrCode);
-            }
 
-            Long enfantId = enfant.getId();
-            // 2. Récupérer la liste des vaccinations en utilisant l'enfantId
-            List<Vaccination> vaccinations = vaccinationRepository.getVaccinationByEnfantId(enfantId);
-            List<VaccinationDTO> vaccinationDTOS = vaccinations.stream().
-                    map(vaccinationMapper::fromEntity).
-                    collect(Collectors.toList());
 
-            return vaccinationDTOS;
 
-        } catch (Exception e) {
-            log.error("Erreur lors de la récupération des vaccinations par code QR {}: {}", qrCode, e.getMessage());
-            throw new RuntimeException("Impossible de récupérer les vaccinations pour ce QR Code.", e);
-        }
 
-    }
+
 }

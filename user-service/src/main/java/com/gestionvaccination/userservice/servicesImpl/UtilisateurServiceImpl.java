@@ -38,56 +38,94 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
     private final AuthServiceClient authServiceClient;
 
-    @Override
-    public UtilisateurDTO saveUtilisateur(SaveUtilisateurDTO saveUtilisateurDTO, UserRole userRole,Long localityId,Long centreId) {
-
-        LocalityDTO locality = null;
-        if (localityId != null) {
-            try {
-                locality = locationServiceClient.getLocality(localityId); // Récupère la commune
-                if (locality== null) {
-                    throw new ResourceNotFoundException("Localité non trouvée avec l'ID: " + localityId);
-                }
-//                user.setLocalityId(localityId);
-//                user.setAssignedLocality(assignedLocality);
-            } catch (Exception e) {
-                log.error("Erreur lors de la récupération de la localité avec ID {}: {}", localityId, e.getMessage());
-                throw new ResourceNotFoundException("Erreur lors de la récupération de la localité: " + e.getMessage());
-            }
-        }
-
-        CentreDTO centre=null;
-        if(centreId!=null){
-            try{
-                centre = locationServiceClient.getCentre(centreId);
-                if(centre==null){
-                    throw new ResourceNotFoundException("centre Non trouver Avec Id: " + centreId);
-                }
 
 
-            }catch (Exception e){
-                log.error("Erreur lors de la récupération du Centre avec ID {}: {}", centreId, e.getMessage());
-                throw new ResourceNotFoundException("Erreur lors de la récupération du Centre: " + e.getMessage());
-            }
-        }
+//    @Override
+//    public UtilisateurDTO saveUtilisateur(SaveUtilisateurDTO saveUtilisateurDTO, UserRole userRole,Long localityId,Long centreId) {
+//
+//        LocalityDTO locality = null;
+//        if (localityId != null) {
+//            try {
+//                locality = locationServiceClient.getLocality(localityId); // Récupère la commune
+//                if (locality== null) {
+//                    throw new ResourceNotFoundException("Localité non trouvée avec l'ID: " + localityId);
+//                }
+////                user.setLocalityId(localityId);
+////                user.setAssignedLocality(assignedLocality);
+//            } catch (Exception e) {
+//                log.error("Erreur lors de la récupération de la localité avec ID {}: {}", localityId, e.getMessage());
+//                throw new ResourceNotFoundException("Erreur lors de la récupération de la localité: " + e.getMessage());
+//            }
+//        }
+//
+//        CentreDTO centre=null;
+//        if(centreId!=null){
+//            try{
+//                centre = locationServiceClient.getCentre(centreId);
+//                if(centre==null){
+//                    throw new ResourceNotFoundException("centre Non trouver Avec Id: " + centreId);
+//                }
+//
+//
+//            }catch (Exception e){
+//                log.error("Erreur lors de la récupération du Centre avec ID {}: {}", centreId, e.getMessage());
+//                throw new ResourceNotFoundException("Erreur lors de la récupération du Centre: " + e.getMessage());
+//            }
+//        }
+//
+//        Utilisateur user = utilisateurMapper.fromSaveUtilisateurDTO(saveUtilisateurDTO, locality,centre);
+//        user.setLocalityId(localityId);
+//        user.setLocality(locality);
+//        user.setCentreId(centreId);
+//        user.setCentre(centre);
+//        user.setUserRole(userRole);
+//        Utilisateur savedUser = utilisateurRepository.save(user);
+//        entityEnrichmentService.enrichUtilisateurWithLocality(savedUser);
+//        //entityEnrichmentService.enrichUtilisateurWithLocality(savedUser);
+//        UtilisateurDTO userDTO = utilisateurMapper.fromEntity(savedUser);
+//        userDTO.setLocality(locality);
+//        userDTO.setCentre(centre);
+//
+//
+//
+//        return userDTO;
+//    }
 
-        Utilisateur user = utilisateurMapper.fromSaveUtilisateurDTO(saveUtilisateurDTO, locality,centre);
-        user.setLocalityId(localityId);
-        user.setLocality(locality);
-        user.setCentreId(centreId);
-        user.setCentre(centre);
-        user.setUserRole(userRole);
-        Utilisateur savedUser = utilisateurRepository.save(user);
-        entityEnrichmentService.enrichUtilisateurWithLocality(savedUser);
-        //entityEnrichmentService.enrichUtilisateurWithLocality(savedUser);
-        UtilisateurDTO userDTO = utilisateurMapper.fromEntity(savedUser);
-        userDTO.setLocality(locality);
-        userDTO.setCentre(centre);
 
 
+//    @Override
+//    public UtilisateurDTO saveInfirmier(SaveInfirmierDTO saveInfirmierDTO, UserRole userRole, Long centreId) {
+//        CentreDTO centre=null;
+//        if(centreId!=null){
+//            try{
+//                centre = locationServiceClient.getCentre(centreId);
+//                if(centre==null){
+//                    throw new ResourceNotFoundException("centre Non trouver Avec Id: " + centreId);
+//                }
+//
+//
+//            }catch (Exception e){
+//                log.error("Erreur lors de la récupération du Centre avec ID {}: {}", centreId, e.getMessage());
+//                throw new ResourceNotFoundException("Erreur lors de la récupération du Centre: " + e.getMessage());
+//            }
+//        }
+//
+//        Utilisateur utilisateur = utilisateurMapper.fromSavingInfirmier(saveInfirmierDTO,centre);
+//        utilisateur.setUserRole(userRole);
+//        Utilisateur savedUser = utilisateurRepository.save(utilisateur);
+//        entityEnrichmentService.enrichUtilisateurWithAllData(utilisateur);
+//        UtilisateurDTO userDTO = utilisateurMapper.fromEntity(savedUser);
+//        userDTO.setCentre(centre);
+//
+//        AuthRequestDTO authRequestDTO = new AuthRequestDTO();
+//        authRequestDTO.setUsername(saveInfirmierDTO.getEmail());
+//        authRequestDTO.setPassword(saveInfirmierDTO.getPassword());
+//        authRequestDTO.setRole(userRole.name());
+//        authServiceClient.SaveInfirmier(authRequestDTO);
+//
+//        return userDTO;
+//    }
 
-        return userDTO;
-    }
 
 
 
@@ -119,7 +157,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         authRequestDTO.setUsername(saveInfirmierDTO.getEmail());
         authRequestDTO.setPassword(saveInfirmierDTO.getPassword());
         authRequestDTO.setRole(userRole.name());
-        authServiceClient.SaveInfirmier(authRequestDTO);
+        authServiceClient.SaveUser(authRequestDTO);
 
         return userDTO;
     }
@@ -147,6 +185,12 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 //        entityEnrichmentService.enrichUtilisateurWithCentre(utilisateur);
         UtilisateurDTO userDTO = utilisateurMapper.fromEntity(savedUser);
         userDTO.setCentre(centre);
+
+        AuthRequestDTO authRequestDTO = new AuthRequestDTO();
+        authRequestDTO.setUsername(saveParentDTO.getEmail());
+        authRequestDTO.setPassword(saveParentDTO.getPassword());
+        authRequestDTO.setRole(userRole.name());
+        authServiceClient.SaveUser(authRequestDTO);
 
         return userDTO;
     }

@@ -157,4 +157,21 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         appointment.setStatut(updateStatutAppointmentDTO.getStatut());
     }
+
+
+
+    // Enrichit un rendez-vous avec les données de l'enfant et de l'utilisateur
+    public Appointment enrichAppointment(Appointment appointment) {
+        // Récupérer les données de l'enfant
+        EnfantDTO enfant = userServiceClient.getEnfantById(appointment.getEnfantId());
+        appointment.setEnfant(enfant);
+
+        // Récupérer les données de l'utilisateur (parent)
+        if (appointment.getUserId() != null) {
+            UtilisateurDTO utilisateur = userServiceClient.getUserById(appointment.getUserId());
+            appointment.setUtilisateur(utilisateur);
+        }
+
+        return appointment;
+    }
 }

@@ -78,14 +78,17 @@ public class CentreServiceImpl implements CentreService {
         return centreMapper.fromEntity(centre1);
     }
 
+
     @Override
-    public List<CentreDTO> findByParentId(Long parentId) {
-        List<Centre> centres= centreRepository.findByParentId(parentId);
-
-        List<CentreDTO> centreDTOS = centres.stream().map(centreMapper::fromEntity)
+    /**
+     * Récupère une liste de tous les centres rattachés à un district spécifique.
+     * Cette méthode est utilisée pour les calculs de statistiques par district.
+     * @param districtId L'identifiant du district.
+     * @return Une liste de {@link CentreDTO} pour tous les centres du district.
+     */
+    public List<CentreDTO> getCentresByDistrict(Long districtId) {
+        return centreRepository.findByParentId(districtId).stream()
+                .map(centreMapper::fromEntity) // Utilisez une méthode de conversion pour retourner des DTO
                 .collect(Collectors.toList());
-
-
-        return centreDTOS;
     }
 }

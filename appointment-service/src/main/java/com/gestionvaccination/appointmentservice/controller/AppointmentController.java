@@ -5,6 +5,7 @@ import com.gestionvaccination.appointmentservice.dto.SaveAppointmentDTO;
 import com.gestionvaccination.appointmentservice.dto.UpdateAppointmentDTO;
 import com.gestionvaccination.appointmentservice.dto.UpdateStatutAppointmentDTO;
 import com.gestionvaccination.appointmentservice.service.AppointmentService;
+import com.gestionvaccination.appointmentservice.service.impl.VaccinationReminderScheduler;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -29,6 +30,7 @@ import java.util.List;
 @AllArgsConstructor
 public class AppointmentController {
     private final AppointmentService appointmentService;
+    private final VaccinationReminderScheduler vaccinationReminderScheduler;
 
     @PostMapping
     @Operation(summary = "Créer un rendez-vous", description = "Crée un nouveau rendez-vous pour un enfant")
@@ -117,6 +119,18 @@ public class AppointmentController {
         appointmentService.updateStatut(appointmentId, updateStatutAppointmentDTO);
         return ResponseEntity.noContent().build();
     }
+
+
+    @GetMapping("/test-reminders")
+    @Operation(summary = "Envoie de Rappels Manuelles ", description = "Envoie de Rappels Manuelles")
+    @ApiResponse(responseCode = "200", description = "Envoie de Rappels Manuelles")
+    public ResponseEntity<String> testReminders() {
+        vaccinationReminderScheduler.sendVaccinationReminders();
+        return ResponseEntity.ok("Rappels envoyés manuellement !");
+
+    }
+
+
 
 
 
