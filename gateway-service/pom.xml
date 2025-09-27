@@ -8,11 +8,11 @@
         <version>3.4.5</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>org.chiftproject</groupId>
+    <groupId>com.gestionvaccination</groupId>
     <artifactId>gateway-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>gateway-service</name>
-    <description>gateway-service</description>
+    <description>Gateway Service for Vaccination Management</description>
     <url/>
     <licenses>
         <license/>
