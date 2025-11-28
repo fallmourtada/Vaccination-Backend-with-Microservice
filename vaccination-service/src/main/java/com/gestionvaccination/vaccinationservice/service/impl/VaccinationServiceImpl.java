@@ -45,8 +45,89 @@ public class VaccinationServiceImpl implements VaccinationService {
 //        return null;
 //    }
 
+//    @Override
+//    public VaccinationDTO saveVaccination(SaveVaccinationDTO saveVaccinationDTO, Long vaccinId, Long appointmentId,  Long userId,Long enfantId) {
+//        AppointmentDTO appointment=null;
+//        if(appointmentId!=null){
+//            try{
+//                appointment = appointmentServiceClient.getAppointmentById(appointmentId);
+//                if(appointment==null){
+//                    throw new ResourceNotFoundException("Rendez Vous  Non trouver Avec Id: " + appointmentId);
+//                }
+//
+//
+//            }catch (Exception e){
+//                log.error("Erreur lors de la récupération du RendezVous avec ID {}: {}", appointmentId, e.getMessage());
+//                throw new ResourceNotFoundException("Erreur lors de la récupération du RendezVous: " + e.getMessage());
+//            }
+//        }
+//
+//        VaccineDTO  vaccin=null;
+//        if(vaccinId!=null){
+//            try{
+//                vaccin = vaccinServiceClient.getVaccinById(vaccinId);
+//                if(vaccin==null){
+//                    throw new ResourceNotFoundException("Vaccin  Non trouver Avec Id: " + vaccinId);
+//                }
+//
+//
+//            }catch (Exception e){
+//                log.error("Erreur lors de la récupération du Vaccin avec ID {}: {}", vaccinId, e.getMessage());
+//                throw new ResourceNotFoundException("Erreur lors de la récupération du Vaccin: " + e.getMessage());
+//            }
+//        }
+//
+//
+//        UtilisateurDTO  utilisateur=null;
+//        if(userId!=null){
+//            try{
+//                utilisateur = userServiceClient.getUser(userId);
+//                if(utilisateur==null){
+//                    throw new ResourceNotFoundException("Infirmier Non trouver Avec Id: " + userId);
+//                }
+//
+//
+//            }catch (Exception e){
+//                log.error("Erreur lors de la récupération de l'infirmier  avec ID {}: {}", userId, e.getMessage());
+//                throw new ResourceNotFoundException("Erreur lors de la récupération de l'infirmier: " + e.getMessage());
+//            }
+//        }
+//
+//        EnfantDTO  enfant=null;
+//        if(enfantId!=null){
+//            try{
+//                enfant = userServiceClient.getEnfantById(enfantId);
+//                if(enfant==null){
+//                    throw new ResourceNotFoundException("Enfant Non trouver Avec Id: " + enfantId);
+//                }
+//
+//
+//            }catch (Exception e){
+//                log.error("Erreur lors de la récupération de l'enfant  avec ID {}: {}", enfantId, e.getMessage());
+//                throw new ResourceNotFoundException("Erreur lors de la récupération de l'enfant: " + e.getMessage());
+//            }
+//        }
+//
+//
+//
+//       Vaccination vaccination  =  vaccinationMapper.fromSaveVaccination(saveVaccinationDTO,utilisateur,appointment,vaccin,enfant);
+//
+//        Vaccination vaccination1 = vaccinationRepository.save(vaccination);
+//
+//        UpdateStatutAppointmentDTO updateStatutAppointmentDTO = new UpdateStatutAppointmentDTO();
+//        updateStatutAppointmentDTO.setStatut(StatutRv.EFFECTUER);
+//        appointmentServiceClient.updateStatuAppointment(appointmentId,updateStatutAppointmentDTO);
+//
+//
+//
+//        entityEnrichmentService.enrichVaccinationWithAllData(vaccination1);
+//
+//        return vaccinationMapper.fromEntity(vaccination1);
+//    }
+
     @Override
-    public VaccinationDTO saveVaccination(SaveVaccinationDTO saveVaccinationDTO, Long vaccinId, Long appointmentId,  Long userId,Long enfantId) {
+    public VaccinationDTO saveVaccination(SaveVaccinationDTO saveVaccinationDTO, Long vaccinId, Long appointmentId, Long parentId, Long enfantId, Long infirmierId) {
+
         AppointmentDTO appointment=null;
         if(appointmentId!=null){
             try{
@@ -61,6 +142,105 @@ public class VaccinationServiceImpl implements VaccinationService {
                 throw new ResourceNotFoundException("Erreur lors de la récupération du RendezVous: " + e.getMessage());
             }
         }
+
+
+        VaccineDTO  vaccin=null;
+        if(vaccinId!=null){
+           try{
+                vaccin = vaccinServiceClient.getVaccinById(vaccinId);
+                if(vaccin==null){
+                   throw new ResourceNotFoundException("Vaccin  Non trouver Avec Id: " + vaccinId);
+                }
+
+
+           }catch (Exception e){
+                log.error("Erreur lors de la récupération du Vaccin avec ID {}: {}", vaccinId, e.getMessage());
+                throw new ResourceNotFoundException("Erreur lors de la récupération du Vaccin: " + e.getMessage());
+            }
+        }
+
+
+
+        EnfantDTO  enfant=null;
+       if(enfantId!=null){
+            try{
+                enfant = userServiceClient.getEnfantById(enfantId);
+                if(enfant==null){
+                    throw new ResourceNotFoundException("Enfant Non trouver Avec Id: " + enfantId);
+                }
+
+
+            }catch (Exception e){
+             log.error("Erreur lors de la récupération de l'enfant  avec ID {}: {}", enfantId, e.getMessage());              throw new ResourceNotFoundException("Erreur lors de la récupération de l'enfant: " + e.getMessage());
+           }
+        }
+
+       UtilisateurDTO parent =null;
+       if(parentId!=null){
+           try {
+               parent = userServiceClient.getUser(parentId);
+               if(parent==null){
+                   throw new ResourceNotFoundException("Parent Non trouver Avec Id: " + parentId);
+               }
+
+           }catch (Exception e){
+               log.error("Erreur lors de la récupération du parent  avec ID {}: {}", parentId, e.getMessage());
+
+           }
+
+       }
+
+
+        UtilisateurDTO infirmier=null;
+        if(infirmierId!=null){
+            try {
+                infirmier = userServiceClient.getUser(infirmierId);
+                if(infirmier==null){
+                    throw new ResourceNotFoundException("Infirmier Non trouver Avec Id: " + infirmierId);
+                }
+
+            }catch (Exception e){
+                log.error("Erreur lors de la récupération de l'infirmier  avec ID {}: {}", infirmierId, e.getMessage());
+
+            }
+
+        }
+
+        Vaccination vaccination = vaccinationMapper.fromSaveVaccination1(saveVaccinationDTO,parent,infirmier,appointment,vaccin,enfant);
+
+        Vaccination vaccination1 = vaccinationRepository.save(vaccination);
+
+        UpdateStatutAppointmentDTO updateStatutAppointmentDTO = new UpdateStatutAppointmentDTO();
+        updateStatutAppointmentDTO.setStatut(StatutRv.EFFECTUER);
+        appointmentServiceClient.updateStatuAppointment(appointmentId,updateStatutAppointmentDTO);
+
+
+
+        entityEnrichmentService.enrichVaccinationWithAllData(vaccination1);
+
+        return vaccinationMapper.fromEntity(vaccination1);
+
+    }
+
+    @Override
+    public VaccinationDTO saveVaccination(SaveVaccinationDTO saveVaccinationDTO, Long vaccinId, Long appointmentId, Long parentId, Long infirmierId) {
+        Long enfantId  =saveVaccinationDTO.getEnfantId();
+
+        AppointmentDTO appointment=null;
+        if(appointmentId!=null){
+            try{
+                appointment = appointmentServiceClient.getAppointmentById(appointmentId);
+                if(appointment==null){
+                    throw new ResourceNotFoundException("Rendez Vous  Non trouver Avec Id: " + appointmentId);
+                }
+
+
+            }catch (Exception e){
+                log.error("Erreur lors de la récupération du RendezVous avec ID {}: {}", appointmentId, e.getMessage());
+                throw new ResourceNotFoundException("Erreur lors de la récupération du RendezVous: " + e.getMessage());
+            }
+        }
+
 
         VaccineDTO  vaccin=null;
         if(vaccinId!=null){
@@ -78,20 +258,6 @@ public class VaccinationServiceImpl implements VaccinationService {
         }
 
 
-        UtilisateurDTO  utilisateur=null;
-        if(userId!=null){
-            try{
-                utilisateur = userServiceClient.getUser(userId);
-                if(utilisateur==null){
-                    throw new ResourceNotFoundException("Infirmier Non trouver Avec Id: " + userId);
-                }
-
-
-            }catch (Exception e){
-                log.error("Erreur lors de la récupération de l'infirmier  avec ID {}: {}", userId, e.getMessage());
-                throw new ResourceNotFoundException("Erreur lors de la récupération de l'infirmier: " + e.getMessage());
-            }
-        }
 
         EnfantDTO  enfant=null;
         if(enfantId!=null){
@@ -103,14 +269,42 @@ public class VaccinationServiceImpl implements VaccinationService {
 
 
             }catch (Exception e){
-                log.error("Erreur lors de la récupération de l'enfant  avec ID {}: {}", enfantId, e.getMessage());
-                throw new ResourceNotFoundException("Erreur lors de la récupération de l'enfant: " + e.getMessage());
+                log.error("Erreur lors de la récupération de l'enfant  avec ID {}: {}", enfantId, e.getMessage());              throw new ResourceNotFoundException("Erreur lors de la récupération de l'enfant: " + e.getMessage());
             }
         }
 
+        UtilisateurDTO parent =null;
+        if(parentId!=null){
+            try {
+                parent = userServiceClient.getUser(parentId);
+                if(parent==null){
+                    throw new ResourceNotFoundException("Parent Non trouver Avec Id: " + parentId);
+                }
+
+            }catch (Exception e){
+                log.error("Erreur lors de la récupération du parent  avec ID {}: {}", parentId, e.getMessage());
+
+            }
+
+        }
 
 
-       Vaccination vaccination  =  vaccinationMapper.fromSaveVaccination(saveVaccinationDTO,utilisateur,appointment,vaccin,enfant);
+        UtilisateurDTO infirmier=null;
+        if(infirmierId!=null){
+            try {
+                infirmier = userServiceClient.getUser(infirmierId);
+                if(infirmier==null){
+                    throw new ResourceNotFoundException("Infirmier Non trouver Avec Id: " + infirmierId);
+                }
+
+            }catch (Exception e){
+                log.error("Erreur lors de la récupération de l'infirmier  avec ID {}: {}", infirmierId, e.getMessage());
+
+            }
+
+        }
+
+        Vaccination vaccination = vaccinationMapper.fromSaveVaccination1(saveVaccinationDTO,parent,infirmier,appointment,vaccin,enfant);
 
         Vaccination vaccination1 = vaccinationRepository.save(vaccination);
 
@@ -194,10 +388,15 @@ public class VaccinationServiceImpl implements VaccinationService {
     }
 
 
+    @Override
+    public List<VaccinationDTO> getVaccinationByParent(Long parentId) {
+        List<Vaccination>  vaccinationList = vaccinationRepository.findByParentId(parentId);
+        List<VaccinationDTO> vaccinationDTOList = vaccinationList.stream().
+                map(vaccinationMapper::fromEntity).
+                collect(Collectors.toList());
 
-
-
-
+        return vaccinationDTOList;
+    }
 
 
 }

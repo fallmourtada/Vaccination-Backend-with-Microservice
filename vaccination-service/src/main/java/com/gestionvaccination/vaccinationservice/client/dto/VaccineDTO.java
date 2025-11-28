@@ -1,6 +1,7 @@
 package com.gestionvaccination.vaccinationservice.client.dto;
 
 import com.gestionvaccination.vaccinationservice.client.enumeration.AdministrationMode;
+import com.gestionvaccination.vaccinationservice.client.enumeration.PeriodePrise;
 import com.gestionvaccination.vaccinationservice.client.enumeration.VaccineType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * DTO pour retourner les informations d'un vaccin
@@ -17,50 +19,95 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class VaccineDTO {
     
-    private Long id;
-    
+//    private Long id;
+//
+//    private String nom;
+//
+//    private String fabricant;
+//
+//    private String numeroLot;
+//
+//    private LocalDate dateProduction;
+//
+//    private LocalDate dateExpiration;
+//
+//    private String description;
+//
+//    private String dosage;
+//
+//    private VaccineType typeVaccin;
+//
+//    private AdministrationMode modeAdministration;
+//
+//    private String temperatureConservation;
+//
+//    private String contreIndications;
+//
+//    private String effetsSecondaires;
+//
+//    private Integer ageMinimumMois;
+//
+//    private Integer ageMaximumMois;
+//
+//    private Integer dosesRequises;
+//
+//    private Integer intervalleEntresDosesJours;
+//
+//    private Boolean rappelRecommande;
+//
+//    private Integer intervalleRappelMois;
+//
+//    private Integer quantiteDisponible;
+//
+//    // Données enrichies
+////    private LocationDTO locality;
+//
+//    private LocalDateTime dateCreation;
+//
+//    private LocalDateTime dateModification;
+
+private Long id;
+
     private String nom;
-    
+
     private String fabricant;
-    
+
     private String numeroLot;
-    
+
     private LocalDate dateProduction;
-    
+
     private LocalDate dateExpiration;
-    
+
     private String description;
-    
+
     private String dosage;
-    
+
     private VaccineType typeVaccin;
-    
+
     private AdministrationMode modeAdministration;
-    
+
     private String temperatureConservation;
-    
-    private String contreIndications;
-    
+
     private String effetsSecondaires;
-    
-    private Integer ageMinimumMois;
-    
-    private Integer ageMaximumMois;
-    
-    private Integer dosesRequises;
-    
-    private Integer intervalleEntresDosesJours;
-    
-    private Boolean rappelRecommande;
-    
-    private Integer intervalleRappelMois;
-    
-    private Integer quantiteDisponible;
-    
-    // Données enrichies
-//    private LocationDTO locality;
-    
-    private LocalDateTime dateCreation;
-    
-    private LocalDateTime dateModification;
+
+
+    // private Integer dosesRequises;
+
+    private PeriodePrise periodePrise;
+
+    private Date createdAt;
+
+    private Date updatedAt;
+
+    private String protection;
+
+    private String duree;
+
+    private String aAdministrer;
+
+    private String precautionsAPrendre;
+
+    private String lieuAdministration;
+
+    private Integer dosesAdministres;
 }

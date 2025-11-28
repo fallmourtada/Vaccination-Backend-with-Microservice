@@ -37,4 +37,7 @@ public interface VaccinationRepository extends JpaRepository<Vaccination, Long> 
      */
     List<Vaccination> findByEnfantIdIn(List<Long> enfantIds);
 
+
+    List<Vaccination> findByParentId(Long parentId);
+
 }

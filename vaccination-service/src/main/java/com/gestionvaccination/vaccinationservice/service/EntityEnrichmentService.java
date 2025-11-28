@@ -82,23 +82,65 @@ public class EntityEnrichmentService {
 
 
 
-    public void enrichVaccinationWithUser(Vaccination vaccination) {
-        if(vaccination == null || vaccination.getUserId() == null) {
+//    public void enrichVaccinationWithUser(Vaccination vaccination) {
+//        if(vaccination == null || vaccination.getUserId() == null) {
+//            return;
+//        }
+//
+//        try {
+//            UtilisateurDTO user = userServiceClient.getUser(vaccination.getUserId());
+//            vaccination.setUtilisateur(user);
+//
+//        } catch (feign.FeignException.NotFound e) {
+//            log.warn("Utilisateur Avec l'id {} non trouvée pour la Vaccination {}",
+//                    vaccination.getUserId(), vaccination.getId());
+//
+//            // Ne définit pas la localité sur null pour ne pas perdre l'ID de référence
+//        } catch (Exception e) {
+//            log.error("Erreur lors de la récupération l'utilisateur avec l'ID: {}",
+//                    vaccination.getUserId(), e);
+//            // Ne lève pas d'exception pour éviter de bloquer l'ensemble de la requête
+//        }
+//    }
+
+
+    public void enrichVaccinationWithInfirmier(Vaccination vaccination) {
+        if(vaccination == null || vaccination.getInfirmierId()== null) {
             return;
         }
 
         try {
-            UtilisateurDTO user = userServiceClient.getUser(vaccination.getUserId());
-            vaccination.setUtilisateur(user);
+            UtilisateurDTO infirmier = userServiceClient.getUser(vaccination.getInfirmierId());
+            vaccination.setInfirmier(infirmier);
 
         } catch (feign.FeignException.NotFound e) {
-            log.warn("Utilisateur Avec l'id {} non trouvée pour la Vaccination {}",
-                    vaccination.getUserId(), vaccination.getId());
+            log.warn("Infirmier Avec l'id {} non trouvée pour la Vaccination {}",
+                    vaccination.getInfirmierId(), vaccination.getId());
 
             // Ne définit pas la localité sur null pour ne pas perdre l'ID de référence
         } catch (Exception e) {
-            log.error("Erreur lors de la récupération l'utilisateur avec l'ID: {}",
-                    vaccination.getUserId(), e);
+            log.error("Erreur lors de la récupération l'infirmier avec l'ID: {}",
+                    vaccination.getInfirmierId(), e);
+            // Ne lève pas d'exception pour éviter de bloquer l'ensemble de la requête
+        }
+    }
+
+    public void enrichVaccinationWithParent(Vaccination vaccination) {
+        if(vaccination == null || vaccination.getParentId()== null) {
+            return;
+        }
+
+        try {
+            UtilisateurDTO parent = userServiceClient.getUser(vaccination.getParentId());
+            vaccination.setParent(parent);
+        } catch (feign.FeignException.NotFound e) {
+            log.warn("Parent Avec l'id {} non trouvée pour la Vaccination {}",
+                    vaccination.getParentId(), vaccination.getId());
+
+            // Ne définit pas la localité sur null pour ne pas perdre l'ID de référence
+        } catch (Exception e) {
+            log.error("Erreur lors de la récupération du Parent avec l'ID: {}",
+                    vaccination.getParentId(), e);
             // Ne lève pas d'exception pour éviter de bloquer l'ensemble de la requête
         }
     }
@@ -135,12 +177,27 @@ public class EntityEnrichmentService {
     }
 
 
-    public void enrichVaccinationsWithUtilisateurs(Collection<Vaccination> vaccinations ) {
-        if (vaccinations == null || vaccinations.isEmpty()) {
+//    public void enrichVaccinationsWithUtilisateurs(Collection<Vaccination> vaccinations ) {
+//        if (vaccinations == null || vaccinations.isEmpty()) {
+//            return;
+//        }
+//
+//        vaccinations.forEach(this::enrichVaccinationWithUser);
+//    }
+
+    public void enrichVaccinationsWithInfirmiers(Collection<Vaccination> vaccinations) {
+        if(vaccinations == null || vaccinations.isEmpty()) {
             return;
         }
 
-        vaccinations.forEach(this::enrichVaccinationWithUser);
+        vaccinations.forEach(this::enrichVaccinationWithInfirmier);
+    }
+
+    public void enrichVaccinationsWithParents(Collection<Vaccination> vaccinations) {
+        if(vaccinations == null || vaccinations.isEmpty()) {
+            return;
+        }
+        vaccinations.forEach(this::enrichVaccinationWithParent);
     }
 
 
@@ -167,9 +224,11 @@ public class EntityEnrichmentService {
         }
 
         this.enrichVaccinationWithVaccin(vaccination);
-        this.enrichVaccinationWithUser(vaccination);
+        //this.enrichVaccinationWithUser(vaccination);
         this.enrichVaccinationWithAppointment(vaccination);
         this.enrichVaccinationWithEnfant(vaccination);
+        this.enrichVaccinationWithInfirmier(vaccination);
+        this.enrichVaccinationWithParent(vaccination);
     }
 
 

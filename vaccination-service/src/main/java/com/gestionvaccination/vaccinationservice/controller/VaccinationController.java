@@ -29,11 +29,38 @@ import java.util.Map;
 
 public class VaccinationController {
     private final VaccinationService vaccinationService;
+//
+//    @PostMapping
+//    public ResponseEntity<VaccinationDTO> creer(@RequestBody SaveVaccinationDTO saveVaccinationDTO,@RequestParam Long vaccinId,@RequestParam Long appointmentId,@RequestParam Long userId,@RequestParam Long enfantId) {
+//        return ResponseEntity.status(201).body(vaccinationService.saveVaccination(saveVaccinationDTO,vaccinId,appointmentId,userId,enfantId));
+//    }
+
+//    @PostMapping
+//    public ResponseEntity<VaccinationDTO> creer(
+//            @RequestBody SaveVaccinationDTO saveVaccinationDTO,
+//            @RequestParam Long infirmierId,
+//            @RequestParam Long appointmentId,
+//            @RequestParam Long vaccinId,
+//            @RequestParam(required = false) Long parentId,
+//            @RequestParam(required = false) Long enfantId
+//    ) {
+//        return ResponseEntity.status(201)
+//                .body(vaccinationService.saveVaccination(saveVaccinationDTO, vaccinId, appointmentId, parentId, enfantId, infirmierId));
+//    }
+
 
     @PostMapping
-    public ResponseEntity<VaccinationDTO> creer(@RequestBody SaveVaccinationDTO saveVaccinationDTO,@RequestParam Long vaccinId,@RequestParam Long appointmentId,@RequestParam Long userId,@RequestParam Long enfantId) {
-        return ResponseEntity.status(201).body(vaccinationService.saveVaccination(saveVaccinationDTO,vaccinId,appointmentId,userId,enfantId));
+    public ResponseEntity<VaccinationDTO> creer(
+            @RequestBody SaveVaccinationDTO saveVaccinationDTO,
+            @RequestParam Long vaccinId,
+            @RequestParam Long appointmentId,
+            @RequestParam(required = false) Long parentId,
+            @RequestParam Long infirmierId
+    ) {
+        return ResponseEntity.status(201)
+                .body(vaccinationService.saveVaccination(saveVaccinationDTO, vaccinId, appointmentId, parentId,infirmierId));
     }
+
 
 
     @GetMapping("/{id}")
@@ -56,6 +83,12 @@ public class VaccinationController {
     @GetMapping("/enfant/{enfantId}")
     public ResponseEntity<List<VaccinationDTO>> parEnfant(@PathVariable Long enfantId) {
         return ResponseEntity.ok(vaccinationService.getVaccinationByEnfant(enfantId));
+    }
+
+
+    @GetMapping("/parent/{parentId}")
+    public ResponseEntity<List<VaccinationDTO>> parParent(@PathVariable Long parentId) {
+        return ResponseEntity.ok(vaccinationService.getVaccinationByParent(parentId));
     }
 
     @GetMapping("/vaccine/{vaccineId}")

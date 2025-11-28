@@ -25,6 +25,7 @@ public class Locality extends AbstractEntity {
 
     private String name;
 
+    
     private String codification;
 
 

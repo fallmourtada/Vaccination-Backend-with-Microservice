@@ -15,6 +15,19 @@ import java.util.List;
  */
 public interface VaccinationService {
 
+//    /**
+//     * Enregistre un nouvel acte de vaccination dans le carnet de l'enfant.
+//     *
+//     * @param saveVaccinationDTO Les données spécifiques de l'acte de vaccination (date, observations, etc.).
+//     * @param vaccinId L'ID du vaccin utilisé (référence au microservice vaccin).
+//     * @param appointmentId L'ID du rendez-vous associé à cette vaccination (peut être null).
+//     * @param userId L'ID de l'utilisateur (Infirmier) ayant effectué l'acte.
+//     * @param enfantId L'ID de l'enfant qui a reçu le vaccin.
+//     * @return L'objet VaccinationDTO de l'acte enregistré.
+//     */
+//    VaccinationDTO saveVaccination(SaveVaccinationDTO saveVaccinationDTO, Long vaccinId, Long appointmentId, Long userId, Long enfantId);
+
+
     /**
      * Enregistre un nouvel acte de vaccination dans le carnet de l'enfant.
      *
@@ -25,7 +38,20 @@ public interface VaccinationService {
      * @param enfantId L'ID de l'enfant qui a reçu le vaccin.
      * @return L'objet VaccinationDTO de l'acte enregistré.
      */
-    VaccinationDTO saveVaccination(SaveVaccinationDTO saveVaccinationDTO, Long vaccinId, Long appointmentId, Long userId, Long enfantId);
+    VaccinationDTO saveVaccination(SaveVaccinationDTO saveVaccinationDTO, Long vaccinId, Long appointmentId, Long parentId, Long enfantId,Long infirmierId);
+
+    /**
+     * Enregistre un nouvel acte de vaccination dans le carnet de l'enfant.
+     *
+     * @param saveVaccinationDTO Les données spécifiques de l'acte de vaccination (date, observations, etc.).
+     * @param vaccinId L'ID du vaccin utilisé (référence au microservice vaccin).
+     * @param appointmentId L'ID du rendez-vous associé à cette vaccination (peut être null).
+     * @param userId L'ID de l'utilisateur (Infirmier) ayant effectué l'acte.
+     * @param enfantId L'ID de l'enfant qui a reçu le vaccin.
+     * @return L'objet VaccinationDTO de l'acte enregistré.
+     */
+    VaccinationDTO saveVaccination(SaveVaccinationDTO saveVaccinationDTO, Long vaccinId, Long appointmentId, Long parentId,Long infirmierId);
+
 
     /**
      * Récupère un acte de vaccination spécifique par son identifiant unique.
@@ -82,5 +108,8 @@ public interface VaccinationService {
      * @return Une liste des VaccinationDTO effectuées dans ce centre.
      */
     List<VaccinationDTO> getVaccinationByCentre(Long centreId);
+
+
+    List<VaccinationDTO> getVaccinationByParent(Long parentId);
 
 }

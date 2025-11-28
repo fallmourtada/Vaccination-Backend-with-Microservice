@@ -35,6 +35,7 @@ public class SecurityConfig1 {
                                 "/api/v1/vaccinations/byQrCode/**",
                                 "/api/v1/vaccinations/by-qr-code/{qrCode}/with-vaccinations",
                                 "/api/v1/vaccinations/enfant/**",
+                                "/api/v1/vaccinations/parent/**",
                                 "/api/v1/vaccines/**",
                                 "/api/v1/vaccines/{vaccineId}",
                                 "/api/v1/appointments/**",

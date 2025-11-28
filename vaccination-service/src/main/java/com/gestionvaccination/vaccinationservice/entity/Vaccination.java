@@ -2,6 +2,7 @@ package com.gestionvaccination.vaccinationservice.entity;
 
 import com.gestionvaccination.vaccinationservice.client.dto.*;
 import com.gestionvaccination.vaccinationservice.enumeration.StatutVaccination;
+import com.gestionvaccination.vaccinationservice.enumeration.TypeVaccination;
 import com.gestionvaccination.vaccinationservice.helpers.AbstractEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -24,7 +25,7 @@ public class   Vaccination extends AbstractEntity {
 
 //    private boolean estEffectuer;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Long enfantId;
 
     @Column(nullable = false)
@@ -37,14 +38,29 @@ public class   Vaccination extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     private StatutVaccination statutVaccination;
 
-    private Long userId;
+
+    @Enumerated(EnumType.STRING)
+    private TypeVaccination typeVaccination;
+
+    //private Long userId;
+
+    private Long infirmierId;
+
+
+    private Long parentId;
 
 
     private LocalDate date;
 
 
+//    @Transient
+//    private UtilisateurDTO utilisateur;
+
     @Transient
-    private UtilisateurDTO utilisateur;
+    private UtilisateurDTO infirmier;
+
+    @Transient
+    private UtilisateurDTO parent;
 
 
     @Transient

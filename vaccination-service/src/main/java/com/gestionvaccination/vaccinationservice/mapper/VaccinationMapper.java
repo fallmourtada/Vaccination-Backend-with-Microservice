@@ -2,6 +2,7 @@ package com.gestionvaccination.vaccinationservice.mapper;
 
 import com.gestionvaccination.vaccinationservice.client.dto.*;
 import com.gestionvaccination.vaccinationservice.enumeration.StatutVaccination;
+import com.gestionvaccination.vaccinationservice.enumeration.TypeVaccination;
 import org.springframework.stereotype.Component;
 import com.gestionvaccination.vaccinationservice.entity.Vaccination;
 import com.gestionvaccination.vaccinationservice.dto.VaccinationDTO;
@@ -19,6 +20,43 @@ import java.util.stream.Collectors;
  */
 @Service
 public class VaccinationMapper {
+//    public VaccinationDTO fromEntity(Vaccination vaccination) {
+//        if(vaccination == null){
+//            return null;
+//        }
+//
+//        VaccinationDTO vaccinationDTO = new VaccinationDTO();
+//        vaccinationDTO.setId(vaccination.getId());
+//        vaccinationDTO.setStatutVaccination(vaccination.getStatutVaccination());
+//        vaccinationDTO.setTypeVaccination(vaccination.getTypeVaccination());
+//        vaccinationDTO.setDate(vaccination.getDate());
+//
+//
+//        if(vaccination.getVaccine()!= null){
+//            vaccinationDTO.setVaccine(vaccination.getVaccine());
+//        }
+//
+//
+////        if(vaccination.getUtilisateur()!= null){
+////            vaccinationDTO.setUtilisateur(vaccination.getUtilisateur());
+////        }
+//
+//        if(vaccination.getInfirmierId() != null){
+//            vaccinationDTO.setInfirmier(vaccination.getInfirmier());
+//        }
+//
+//        if(vaccination.getParentId() != null){
+//            vaccinationDTO.setParent(vaccination.getParent());
+//        }
+//
+//       if(vaccination.getAppointment()!= null){
+//           vaccinationDTO.setAppointment(vaccination.getAppointment());
+//       }
+//
+//        return vaccinationDTO;
+//    }
+
+
     public VaccinationDTO fromEntity(Vaccination vaccination) {
         if(vaccination == null){
             return null;
@@ -27,6 +65,7 @@ public class VaccinationMapper {
         VaccinationDTO vaccinationDTO = new VaccinationDTO();
         vaccinationDTO.setId(vaccination.getId());
         vaccinationDTO.setStatutVaccination(vaccination.getStatutVaccination());
+        vaccinationDTO.setTypeVaccination(vaccination.getTypeVaccination());
         vaccinationDTO.setDate(vaccination.getDate());
 
 
@@ -35,13 +74,21 @@ public class VaccinationMapper {
         }
 
 
-        if(vaccination.getUtilisateur()!= null){
-            vaccinationDTO.setUtilisateur(vaccination.getUtilisateur());
+//        if(vaccination.getUtilisateur()!= null){
+//            vaccinationDTO.setUtilisateur(vaccination.getUtilisateur());
+//        }
+
+        if(vaccination.getInfirmierId() != null){
+            vaccinationDTO.setInfirmier(vaccination.getInfirmier());
         }
 
-       if(vaccination.getAppointment()!= null){
-           vaccinationDTO.setAppointment(vaccination.getAppointment());
-       }
+        if(vaccination.getParentId() != null){
+            vaccinationDTO.setParent(vaccination.getParent());
+        }
+
+        if(vaccination.getAppointment()!= null){
+            vaccinationDTO.setAppointment(vaccination.getAppointment());
+        }
 
         return vaccinationDTO;
     }
@@ -56,6 +103,10 @@ public class VaccinationMapper {
             vaccination.setStatutVaccination(updateVaccinationDTO.getStatutVaccination());
         }
 
+        if(updateVaccinationDTO.getTypeVaccination()!= null){
+            vaccination.setTypeVaccination(updateVaccinationDTO.getTypeVaccination());
+        }
+
 
 
       if(updateVaccinationDTO.getDate()!= null){
@@ -67,8 +118,61 @@ public class VaccinationMapper {
 
 
 
-    public Vaccination fromSaveVaccination(SaveVaccinationDTO saveVaccinationDTO,
-                                           UtilisateurDTO user,
+//    public Vaccination fromSaveVaccination(SaveVaccinationDTO saveVaccinationDTO,
+//                                           UtilisateurDTO user,
+//                                           AppointmentDTO appointment,
+//                                           VaccineDTO vaccine,
+//                                           EnfantDTO enfant) {
+//
+//        Vaccination vaccination = new Vaccination();
+//        vaccination.setStatutVaccination(StatutVaccination.EFFECTUER);
+//        vaccination.setDate(LocalDate.now());
+//
+//
+//
+//
+//
+//        if(user != null){
+//            vaccination.setUserId(user.getId());
+//            vaccination.setUtilisateur(user);
+//        }else {
+//            vaccination.setUserId(null);
+//        }
+//
+//
+//        if(appointment != null){
+//            vaccination.setAppointmentId(appointment.getId());
+//            vaccination.setAppointment(appointment);
+//        }else {
+//            vaccination.setAppointmentId(null);
+//            vaccination.setAppointment(null);
+//        }
+//
+//
+//        if(vaccine != null){
+//            vaccination.setVaccineId(vaccine.getId());
+//            vaccination.setVaccine(vaccine);
+//        }else {
+//            vaccination.setVaccineId(null);
+//            vaccination.setVaccine(null);
+//        }
+//
+//        if(enfant != null){
+//            vaccination.setEnfantId(enfant.getId());
+//            vaccination.setEnfant(enfant);
+//        }else {
+//            vaccination.setEnfantId(null);
+//            vaccination.setEnfant(null);
+//        }
+//
+//        return vaccination;
+//
+//    }
+
+
+    public Vaccination fromSaveVaccination1(SaveVaccinationDTO saveVaccinationDTO,
+                                           UtilisateurDTO parent,
+                                           UtilisateurDTO infirmier,
                                            AppointmentDTO appointment,
                                            VaccineDTO vaccine,
                                            EnfantDTO enfant) {
@@ -76,16 +180,26 @@ public class VaccinationMapper {
         Vaccination vaccination = new Vaccination();
         vaccination.setStatutVaccination(StatutVaccination.EFFECTUER);
         vaccination.setDate(LocalDate.now());
+        vaccination.setTypeVaccination(saveVaccinationDTO.getTypeVaccination());
 
 
 
 
 
-        if(user != null){
-            vaccination.setUserId(user.getId());
-            vaccination.setUtilisateur(user);
+        if(parent != null){
+            vaccination.setParentId(parent.getId());
+            vaccination.setParent(parent);
         }else {
-            vaccination.setUserId(null);
+            vaccination.setParentId(null);
+            vaccination.setParent(null);
+        }
+
+        if(infirmier!=null){
+            vaccination.setInfirmierId(infirmier.getId());
+            vaccination.setInfirmier(infirmier);
+        }else {
+            vaccination.setInfirmierId(null);
+            vaccination.setInfirmier(null);
         }
 
 
@@ -113,6 +227,16 @@ public class VaccinationMapper {
             vaccination.setEnfantId(null);
             vaccination.setEnfant(null);
         }
+
+
+        if (saveVaccinationDTO.getTypeVaccination().equals(TypeVaccination.PRE_NATAL)) {
+            vaccination.setEnfantId(null);
+            vaccination.setEnfant(null);
+        } else if (saveVaccinationDTO.getTypeVaccination().equals(TypeVaccination.POST_NATAL)) {
+            vaccination.setParentId(null);
+            vaccination.setParent(null);
+        }
+
 
         return vaccination;
 

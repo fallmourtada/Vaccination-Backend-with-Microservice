@@ -1,6 +1,7 @@
 package com.gestionvaccination.vaccinationservice.dto;
 
 import com.gestionvaccination.vaccinationservice.enumeration.StatutVaccination;
+import com.gestionvaccination.vaccinationservice.enumeration.TypeVaccination;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,6 +18,8 @@ import java.time.LocalTime;
 public class UpdateVaccinationDTO {
 
     private StatutVaccination statutVaccination;
+
+    private TypeVaccination typeVaccination;
 
     private LocalDate date;
 

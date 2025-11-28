@@ -1,6 +1,7 @@
 package com.gestionvaccination.vaccinationservice.dto;
 
 import com.gestionvaccination.vaccinationservice.enumeration.StatutVaccination;
+import com.gestionvaccination.vaccinationservice.enumeration.TypeVaccination;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -29,6 +30,9 @@ public class SaveVaccinationDTO {
 
     private StatutVaccination statut;
 
+    private TypeVaccination typeVaccination;
+
+    private Long enfantId;
 
     //private LocalDate date;
 

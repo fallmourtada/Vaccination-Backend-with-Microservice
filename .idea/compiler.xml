@@ -8,22 +8,27 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="vaccine-service" />
+        <module name="appointment-service" />
+        <module name="locality-service" />
+        <module name="location-service" />
+        <module name="auth-service1" />
+        <module name="user-service" />
+        <module name="discovery-service" />
         <module name="reminder-service" />
         <module name="auth-service" />
         <module name="vaccination-service" />
-        <module name="appointment-service" />
-        <module name="location-service" />
-        <module name="auth-service (1)" />
-        <module name="auth-service1" />
-        <module name="reporting-service" />
-        <module name="user-service" />
-        <module name="discovery-service" />
+        <module name="user-service (3)" />
+        <module name="user-service (1)" />
+        <module name="user-service (2)" />
+        <module name="auth-service (3)" />
       </profile>
       <profile name="Annotation profile for gateway-service" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-configuration-processor/3.4.5/spring-boot-configuration-processor-3.4.5.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.38/lombok-1.18.38.jar" />
           <entry name="$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-configuration-processor/3.4.5/spring-boot-configuration-processor-3.4.5.jar" />
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.38/lombok-1.18.38.jar" />
         </processorPath>
@@ -40,13 +45,20 @@
       <module name="appointment-service" options="-parameters" />
       <module name="auth-service" options="-parameters" />
       <module name="auth-service (1)" options="-parameters" />
+      <module name="auth-service (2)" options="-parameters" />
+      <module name="auth-service (3)" options="-parameters" />
       <module name="auth-service1" options="-parameters" />
+      <module name="consultation-service" options="-parameters" />
       <module name="discovery-service" options="-parameters" />
       <module name="gateway-service" options="-parameters" />
+      <module name="locality-service" options="-parameters" />
       <module name="location-service" options="-parameters" />
       <module name="reminder-service" options="-parameters" />
       <module name="reporting-service" options="-parameters" />
       <module name="user-service" options="-parameters" />
+      <module name="user-service (1)" options="-parameters" />
+      <module name="user-service (2)" options="-parameters" />
+      <module name="user-service (3)" options="-parameters" />
       <module name="vaccination-service" options="-parameters" />
       <module name="vaccine-service" options="-parameters" />
     </option>

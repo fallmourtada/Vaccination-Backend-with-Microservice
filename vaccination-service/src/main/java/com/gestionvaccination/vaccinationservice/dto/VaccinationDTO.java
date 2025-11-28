@@ -2,6 +2,7 @@ package com.gestionvaccination.vaccinationservice.dto;
 
 import com.gestionvaccination.vaccinationservice.client.dto.*;
 import com.gestionvaccination.vaccinationservice.enumeration.StatutVaccination;
+import com.gestionvaccination.vaccinationservice.enumeration.TypeVaccination;
 import jakarta.persistence.Column;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -27,12 +28,17 @@ public class VaccinationDTO {
 
     private StatutVaccination statutVaccination;
 
+    private TypeVaccination typeVaccination;
 
 
     private LocalDate date;
 
 
-    private UtilisateurDTO utilisateur;
+//    private UtilisateurDTO utilisateur;
+
+    private UtilisateurDTO infirmier;
+
+    private UtilisateurDTO parent;
 
     private AppointmentDTO appointment;
 

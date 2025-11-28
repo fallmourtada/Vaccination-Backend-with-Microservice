@@ -8,5 +8,5 @@ public enum AdministrationMode {
     INTRAMUSCULAR,      // Intramusculaire
     SUBCUTANEOUS,       // Sous-cutanée
     ORAL,               // Orale
-    NASAL               // Nasale
+    NASAL
 }

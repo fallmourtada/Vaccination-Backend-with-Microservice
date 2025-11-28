@@ -1,27 +1,24 @@
-version: "3"
 
 services:
-  keycloak_dev:
+
+  keycloak:
     image: quay.io/keycloak/keycloak:26.1.2
-    container_name: keycloak_chift_dev
-    command: start-dev --spi-theme-static-max-age=-1 --spi-theme-cache-themes=false --spi-theme-cache-templates=false --features=token-exchange
+    command: start-dev
     environment:
       KC_DB: postgres
-      KC_DB_URL_HOST: postgres_chift_dev
-      KC_DB_URL_DATABASE: keycloak_chift_dev
-      KC_DB_USERNAME: keycloak_chift_dev
+      KC_DB_URL_HOST: postgres
+      KC_DB_URL_DATABASE: keycloak
+      KC_DB_USERNAME: keycloak
       KC_DB_PASSWORD: password
       KC_DB_SCHEMA: public
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
-      KC_FEATURES: token-exchange  # ← Corrigé
-    volumes:
-      - ./keycloak-themes:/opt/keycloak/themes
+      KEYCLOAK_FEATURES: token-exchange,fine-grained-authz
     ports:
       - "8080:8080"
       - "9000:9000"
     depends_on:
-      postgres_chift_dev:  # ← Corrigé le nom
+      postgres:
         condition: service_healthy
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:9000/health/live"]
@@ -29,21 +26,21 @@ services:
       timeout: 10s
       retries: 20
 
-  postgres_chift_dev:  # ← Nom corrigé pour correspondre
-    image: postgres:latest
-    container_name: postgres_chift_dev
+
+  postgres:
+    image: postgres:15
     environment:
-      POSTGRES_DB: keycloak_chift_dev
-      POSTGRES_USER: keycloak_chift_dev
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
       POSTGRES_PASSWORD: password
-    # ← SUPPRIMÉ la ligne command incorrecte qui causait l'erreur 127
     volumes:
-      - postgres_data_chift_dev:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U keycloak_chift_dev"]
+      test: ["CMD-SHELL", "pg_isready -U keycloak"]
       interval: 10s
       timeout: 5s
       retries: 5
 
+
 volumes:
-  postgres_data_chift_dev:
+  postgres_data:
